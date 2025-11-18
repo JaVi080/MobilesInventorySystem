@@ -1,0 +1,119 @@
+/* Reset */
+body, h1, h2, p {
+  margin: 20px;
+  padding: 0px;
+  font-family: Arial, sans-serif;
+  margin-left:200px;
+  margin-top:20px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #34495e;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sidebar h2 {
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  padding: 12px 15px;
+  margin-bottom: 8px;
+  width: 100%;
+  display: block;
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background: #1abc9c;
+}
+
+/* Main content */
+main {
+  margin-left: 240px; /* Space for sidebar */
+  padding: 30px;
+}
+
+
+
+section.active {
+  display: block;
+}
+
+
+
+/* Form Grid */
+.form-grid {
+    margin-left: 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px;
+  background: #1abc9c;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #16a085;
+}
+/* Table Styling */
+table {
+  width: 100%;
+  margin: 10px auto;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Suppliers</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <h1>Mobile Phones Inventory System</h1>
+  </header>
+
+   <nav class="sidebar">
+    <h2 style="text-align:center; margin-bottom:20px;">Menu</h2>
+    <a href="../../index.html">Dashboard</a>
+    <a href="/html_Code/Phones/Phones.html">Phones</a>
+    <a href="Supplier.html">Suppliers</a>
+    <a href="#">Customers</a>
+  </nav>
+
+  <main>
+ 
+    <!-- -------- -->
+     <div id="viewPhones" style="padding:20px;margin-left:50px;">
+      <div>
+  <h2 >View / Update Suppliers Info</h2>
+    <button id="view_Supp_Info">View Suppliers Info</button>
+    </div>
+  <table id="phonesTable" style="margin-left:-100px;" >
+    <thead>
+      <tr>
+        <th>SUPPLIER ID</th>
+        <th>Supplier Name</th>
+        <th>Associated Comapny</th>
+        <th>Supplier Type</th>
+        <th>City</th>
+        <th>Country</th>
+        <th>Email</th>
+        <th>Phone No 1</th>
+        <th>Phone No 2</th>
+         <th>Address</th>
+        <th>Added Date</th>
+      <th>Last Updated </th> 
+    
+      </tr>
+    </thead>
+    <tbody id="phonesTableBody">
+      <!-- Rows will be added dynamically here -->
+    </tbody>
+  </table>
+</div>
+<!-- --------------- -->
+  </main>
+  <script >
+    //View Phones
+const view_button=document.getElementById("view_Supp_Info")?.addEventListener("click",async()=>{
+    try{
+        const res_get=await fetch('http://localhost:5000/Suppliers_View');
+        const res_data=await res_get.json();//.json() is a method on the Response object.
+           // It reads the response body and parses it as JSON.
+           //Now res_data is the actual data 
+           const tbody=document.getElementById("phonesTableBody");
+           tbody.innerHTML="";
+           console.log("hello there buddy");
+           console.log(res_data);
+
+           console.log(res_data[0]?.model);
+ if(res_data.length>0){
+    console.log("sUCCESS Retrieve");
+ }else{
+    console.log("error");
+ }
+               // Display data
+      let html = "";
+        res_data.forEach(phone => {
+          html += `<tr><td>${phone.supplier_id}</td><td>${phone.contact_person_fName + ' ' + phone.contact_person_lName}</td>
+          <td>${phone.Company_Name}</td><td>${phone.supply_type}</td> <td>${phone.city||''}</td>
+          <td>${phone.country||''}</td> <td>${phone.email||''}</td>
+          <td>${phone.phone_no_1||''}</td><td>${phone.phone_no_2||''}</td><td>${phone.Address||''}</td>
+          <td>${new Date(phone.date_added).toLocaleDateString()}</td><td>${new Date(phone.last_updated).toLocaleDateString()}</td></tr>`;
+        });
+
+        tbody.innerHTML = html;
+
+    }catch(err){
+        console.log(err);
+    }
+});
+  </script>
+</body>
+</html>

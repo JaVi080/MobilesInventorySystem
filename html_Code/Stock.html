@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Mobile Phones Inventory System</h1>
+  </header>
+
+   <nav class="sidebar">
+    <h2 style="text-align:center; margin-bottom:20px;">Menu</h2>
+    <a href="../index.html">Dashboard</a>
+    <a href="/html_Code/Phones/Phones.html">Phones</a>
+    <a href="/html_Code/Supplier/Supplier.html">Suppliers</a>
+    <a href="/html_Code/Customer/Customer.html">Customers</a>
+    <a href="Sales.html">Sale</a>
+   <a href="Stock.html">Stock In</a>
+  </nav>
+
+  <main>
+    <div style="padding:20px;margin-left:50px;">
+    <h2>Stock In & Sold</h2>
+
+    <div id="drop">
+       <!-- For Model Name -->
+
+       <select id="dropdown_modelNo" >
+      <option value="" disabled selected>Model Selection</option>
+    </select>  
+
+        <select id="dropdown_supplier" >
+      <option value="" disabled selected>Supplier Selection</option>
+    </select>
+          <div class="form-group">
+          <label for="Quantity">Quantity:</label>
+          <input type="number" id="Quantity" name="Quantity" required>
+        </div>
+      
+        <div class="form-group">
+          <label for=" Price">Price</label>
+          <input type="text" id="Price" name="Price" >
+        </div>
+
+    </div>
+
+  <button id="Stock_btn"> In Stock</button>
+ 
+
+    </div>
+  </main>
+  <script>
+    async function PopulateDropdown(){
+    try{
+        const res_get=await fetch('http://localhost:5000/Phones_View');
+        const res_data=await res_get.json();
+
+       
+        res_data.forEach( e=> {
+          const option=document.createElement("option");
+          option.value=e.Model_no,
+          option.textContent=e.Model_no;
+          document.getElementById("dropdown_modelNo")?.appendChild(option);
+        });
+          const supp_res_get=await fetch('http://localhost:5000/Suppliers_View');
+        const result=await supp_res_get.json();
+
+          result.forEach( e=> {
+          const option3=document.createElement("option");
+          option3.value=e.supplier_id,
+          option3.textContent=e.supplier_id;
+          document.getElementById("dropdown_supplier")?.appendChild(option3);
+        });
+   }catch(err){
+    console.log(err)
+   }
+  }
+  PopulateDropdown();
+  </script>
+  <script>
+       //Searching Specific Phone Data
+const search=document.getElementById("Stock_btn")?.addEventListener("click",async()=>{
+    try{
+      const ModelNo=document.getElementById('dropdown_modelNo').value;
+        const Supplier=document.getElementById('dropdown_supplier').value;
+         const Quantity = document.getElementById("Quantity").value;
+    const Price = document.getElementById("Price").value;
+    
+    const res=await fetch('http://localhost:5000/Stock_in',{
+        method:"POST",
+        headers:{"Content-type":"application/json"},
+        // body:JSON.stringify({P_name,P_model,brand})
+        body:JSON.stringify({ModelNo,Supplier,Quantity,Price})
+    });
+    const data=await res.json();
+          
+             if(res_data.success){
+        console.log("hello there")
+        alert("Sale saved");
+ }else{
+    console.log("error");
+ }
+
+    }catch(e){
+console.log(e.message);
+    }
+  })
+
+  </script>
+</body>
+</html>

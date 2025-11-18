@@ -1,0 +1,100 @@
+
+    /* ===== Basic Reset ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f4f6f8;
+    }
+h1, h2, p {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  margin-left:150px;
+
+}
+  
+    /* ===== Sidebar ===== */
+    nav.sidebar {
+      width: 220px;
+      background: #2c3e50;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding-top: 40px;
+      position: fixed;
+      height: 100%;
+    }
+
+    nav.sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 14px 20px;
+      font-size: 18px;
+      display: block;
+      transition: background 0.3s;
+    }
+
+    nav.sidebar a:hover {
+      background: #1abc9c;
+    }
+
+    /* ===== Main Content ===== */
+    main {
+      margin-left: 220px;
+      padding: 30px;
+      width: 100%;
+    }
+
+ 
+
+    section.active {
+      display: block;
+    }
+
+    /* ===== Boxes for Links ===== */
+  .box-container {
+  display: flex;
+  flex-direction: column;   /* vertical stacking */
+  gap: 25px;                /* space between boxes */
+  margin-top: 40px;
+  margin-left: -100px;
+  align-items: center;  /* align to left side */
+}
+
+/* Each box */
+.box {
+  background: white;
+  border-radius: 12px;
+  border: 3px solid rgba(12, 10, 69, 0.464); /* colorful border — see below */
+  box-shadow: 0 4px 8px hsla(0, 46%, 63%, 0.1);
+  width: 250px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s, background 0.3s, border-color 0.3s;
+}
+
+
+    .box a {
+      text-decoration: none;
+      color: #2c3e50;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .box:hover {
+      background: #1abc9c;
+      transform: translateY(-5px);
+    }
+
+    .box:hover a {
+      color: white;
+    }
+
