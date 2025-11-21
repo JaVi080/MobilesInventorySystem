@@ -117,3 +117,6 @@ tr:nth-child(even) {
 tr:hover {
   background-color: #f1f1f1;
 }
+.selected_row{
+  background-color: #5fb962;
+}
