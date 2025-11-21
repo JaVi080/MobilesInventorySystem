@@ -73,6 +73,20 @@ res.json(phones)
       console.log(err.message);
    }
 })
+
+//updating phones data 
+app.patch('/UpdatePhones',async(req,res)=>{
+   try{
+const {brand,model,model_no,OS,Processor,Storage,Ram,Warranty}=req.body;
+ 
+ await pool.query("insert into Phones (brand, model, model_no,os,Processor,p_storage_gb,ram_gb,Warranty_period) values (?,?,?,?,?,?,?,?) ",
+    [brand,model,model_no,OS,Processor,Storage,Ram,Warranty]);
+
+      res.json({ success: true, message: "Phone added" });
+   }catch(err){
+      console.log(err.message);
+   }
+})
 //Inserting data of SUPPLIERS 
 app.post('/AddSuppliers',async(req,res)=>{
     try{

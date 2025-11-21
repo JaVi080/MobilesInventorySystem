@@ -104,19 +104,30 @@ const search=document.getElementById("search_btn")?.addEventListener("click",asy
 console.log(e.message);
     }
   })
+
+  //function for displayin data
   function display_data(tbody,res_data){
     let html = "";
         res_data.forEach(phone => {
-          html += `<tr><td>${phone.Brand}</td><td>${phone.Model}</td><td>${phone.Model_no}</td><td>${phone.OS||''}</td>
-         <td>${phone.warranty_period||''}</td> <td>${phone.base_price||''}</td>
-          <td>${phone.Total_Stock||''}</td> <td>${phone.scnd_hand_mb||''}</td>
-          <td>${new Date(phone.date_added).toLocaleDateString()}</td><td>${new Date(phone.last_updated).toLocaleDateString()}</td></tr>`;
+          html += `
+       <tr>
+      <td data-column_n="brand" data-original="${phone.Brand}">${phone.Brand}</td>
+      <td data-column_n="model" data-original="${phone.Model}">${phone.Model}</td>
+      <td data-column_n="model_no" data-original="${phone.Model_no}">${phone.Model_no}</td>
+      <td data-column_n="os" data-original="${phone.OS || ''}">${phone.OS || ''}</td>
+      <td data-column_n="warranty_period" data-original="${phone.warranty_period || ''}">${phone.warranty_period || ''}</td>
+      <td data-column_n="base_price" data-original="${phone.base_price || ''}">${phone.base_price || ''}</td>
+      <td data-column_n="total_stock" data-original="${phone.Total_Stock || ''}">${phone.Total_Stock || ''}</td>
+      <td data-column_n="scnd_hand_mb" data-original="${phone.scnd_hand_mb || ''}">${phone.scnd_hand_mb || ''}</td>
+      <td data-column_n="date_added" data-original="${new Date(phone.date_added).toLocaleDateString()}">${new Date(phone.date_added).toLocaleDateString()}</td>
+      <td data-column_n="last_updated" data-original="${new Date(phone.last_updated).toLocaleDateString()}">${new Date(phone.last_updated).toLocaleDateString()}</td>
+    </tr>
+          `;
         });
 
         tbody.innerHTML = html;
 }
-</script>
-  <script >
+
     //View Phones
 const view_button=document.getElementById("view_btn")?.addEventListener("click",async()=>{
     try{
@@ -131,20 +142,21 @@ const view_button=document.getElementById("view_btn")?.addEventListener("click",
 
            console.log(res_data[0]?.model);
  if(res_data.length>0){
+     display_data(tbody,res_data);
     console.log("sUCCESS Retrieve");
  }else{
     console.log("error");
  }
                // Display data
-      let html = "";
-        res_data.forEach(phone => {
-          html += `<tr><td>${phone.Brand}</td><td>${phone.Model}</td><td>${phone.Model_no}</td><td>${phone.OS||''}</td>
-         <td>${phone.warranty_period||''}</td> <td>${phone.base_price||''}</td>
-          <td>${phone.Total_Stock||''}</td> <td>${phone.scnd_hand_mb||''}</td>
-          <td>${new Date(phone.date_added).toLocaleDateString()}</td><td>${new Date(phone.last_updated).toLocaleDateString()}</td></tr>`;
-        });
+      // let html = "";
+      //   res_data.forEach(phone => {
+      //     html += `<tr><td>${phone.Brand}</td><td>${phone.Model}</td><td>${phone.Model_no}</td><td>${phone.OS||''}</td>
+      //    <td>${phone.warranty_period||''}</td> <td>${phone.base_price||''}</td>
+      //     <td>${phone.Total_Stock||''}</td> <td>${phone.scnd_hand_mb||''}</td>
+      //     <td>${new Date(phone.date_added).toLocaleDateString()}</td><td>${new Date(phone.last_updated).toLocaleDateString()}</td></tr>`;
+      //   });
 
-        tbody.innerHTML = html;
+      //   tbody.innerHTML = html;
 
     }catch(err){
         console.log(err);
