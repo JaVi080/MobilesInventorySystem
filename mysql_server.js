@@ -7,10 +7,19 @@ const path =require('path');
 
 // express
 const app=express();
+const corsOptions = {
+  origin: 'http://127.0.0.1:5501', // your frontend origin
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  allowedHeaders: ["Content-Type"],
+  optionsSuccessStatus: 200 // preflight response for older browsers
+};
+// CORS is applied as Express middleware.
 app.use(cors());
 
+
+
 app.use(express.json()); // to parse incoming data
-app.use (express.static(path.join(__dirname, 'Public')));//serves frontend files
+app.use (express.static(path.join(__dirname, 'html_Code')));//serves frontend files
 
 const {createPool}=require('mysql2');
 const pool=createPool({
@@ -40,53 +49,79 @@ const {brand,model,model_no,OS,Processor,Storage,Ram,Warranty}=req.body;
 //Viewing Phones Data 
 app.get('/Phones_View',async(req,res)=>{
    try{
-   const [phones]=await pool.query('select * from  Phones');
+    const param = req.query.param;
+    if (param === 'all'){
+        console.log("All data requested");
+        const [phones]=await pool.query('select * from Phones');
+        return res.json(phones);
+    }else{
+        console.log("Limited data requested");
+    const [phones]=await pool.query('select * from Phones limit 10');
+    res.json(phones);
+    }
    console.log("hello there")
  //  console.log(phones[0]);
-  res.json(phones);
+
    }catch(err){
       console.log(err.message);
+      res.status(500).json({ error: 'Server error' });
    }
 })
 //Filtering Pones
-app.post('/Phones_Filter',async(req,res)=>{
-   try{
-    const{brand,Model,ModelNo}=req.body;
-    console.log("In Filter");
-    console.log({brand,Model,ModelNo});
-    if(brand&&!Model&&!ModelNo){
-          const [phones]=await pool.query('select * from  Phones where Brand =?',[brand]);
-res.json(phones)
-    }else if(Model&&!ModelNo){
-          const [phones]=await pool.query('select * from  Phones where Model=?',[Model]);
-res.json(phones)
-    }else if(ModelNo){
-          const [phones]=await pool.query('select * from  Phones where Model_no',[ModelNo]);
-res.json(phones)
-    }else{
-         const [phones]=await pool.query('select * from  Phones');
-         res.json(phones);
+app.post('/Phones_Filter', async (req, res) => {
+  try {
+    const { phoneId, brand, Model, ModelNo } = req.body;
+
+    let query = 'SELECT * FROM Phones WHERE 1=1';
+    const params = [];
+
+    if (phoneId) {
+      query += ' AND phone_id = ?';
+      params.push(phoneId);
     }
- 
-   console.log("hello there in Filtering");
-   }catch(err){
-      console.log(err.message);
-   }
-})
+    if (brand) {
+      query += ' AND Brand = ?';
+      params.push(brand);
+    }
+    if (Model) {
+      query += ' AND Model = ?';
+      params.push(Model);
+    }
+    if (ModelNo) {
+      query += ' AND Model_no = ?';
+      params.push(ModelNo);
+    }
+
+    const [phones] = await pool.query(query, params);
+    return res.json(phones);
+
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 //updating phones data 
+// app.options('/UpdatePhones',cors());
 app.patch('/UpdatePhones',async(req,res)=>{
+  
    try{
-const {brand,model,model_no,OS,Processor,Storage,Ram,Warranty}=req.body;
- 
- await pool.query("insert into Phones (brand, model, model_no,os,Processor,p_storage_gb,ram_gb,Warranty_period) values (?,?,?,?,?,?,?,?) ",
-    [brand,model,model_no,OS,Processor,Storage,Ram,Warranty]);
+   const {phone_id,update_data}=req.body;
+  let fields=Object.keys(update_data);
+  let values=Object.values(update_data);
+  let sql_query=fields.map(f=>`${f}=?`).join(",");
+  for(var v of values){
+    console.log(v);
+  }
+  values.push(phone_id);
+ await pool.query(`Update Phones set ${sql_query} where phone_id=?`,values);
 
-      res.json({ success: true, message: "Phone added" });
+      res.json({ success: true, message: "Phone Info Updated" });
    }catch(err){
       console.log(err.message);
    }
 })
+
 //Inserting data of SUPPLIERS 
 app.post('/AddSuppliers',async(req,res)=>{
     try{

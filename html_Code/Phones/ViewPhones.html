@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View Phones</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
+
 <body>
   <header>
     <h1>Mobile Phones Inventory System</h1>
   </header>
 
-   <nav class="sidebar">
+  <nav class="sidebar">
     <h2 style="text-align:center; margin-bottom:20px;">Menu</h2>
     <a href="../../index.html">Dashboard</a>
     <a href="Phones.html">Phones</a>
@@ -20,101 +22,137 @@
   </nav>
 
   <main>
- 
+
     <!-- -------- -->
-     <div id="viewPhones" style="padding:20px;margin-left:50px;">
+    <div id="viewPhones" style="padding:20px;margin-left:50px;">
       <div>
-  <h2 >View / Update Phones</h2>
-    <button id="view_btn">View Phones</button>
-
-    </div>
-        <div id="drop">
-       <!-- For Model Name -->
-          <select id="dropdown_brand" >
-      <option value="" disabled selected>Brand Selection</option>
-    </select>
-
-       <select id="dropdown_model" >
-      <option value="" disabled selected>Model Selection</option>
-    </select>  
-
-       <select id="dropdown_modelNo" >
-      <option value="" disabled selected>Model Number Selection</option>
-    </select>  
-<button id="search_btn">Search</button>
-    </div>
-
-    
-  <table id="phonesTable;" style="margin-left:-100px;">
-
-    <thead>
-      <tr>
-        <th>Brand</th>
-        <th>Model</th>
-          <th>Model No</th>
-          <th>OS</th>
-        <th>Warranty (Yrs)</th>
-        <th>Base Price</th>
-        <th>Total Stock</th>
-         <th>2nd_Hand</th>
-         <th>Date Added</th>
-        <th>Last Updated</th>
-      </tr>
-    </thead>
-    <tbody id="phonesTableBody">
-      <!-- Rows will be added dynamically here -->
-    </tbody>
-  </table>
+        <h2>View / Update Phones</h2>
+   <div class="button-row">
+  <button id="view_btn">View Phones</button>
+  <div class="right-buttons">
+    <button id="edit-phone-btn">Edit Info</button>
+    <button id="save-phone-info">Save Info</button>
+  </div>
 </div>
-<!-- new section -->
-<div id="phone-edit">
-<button id="edit-phone-btn">Edit Info</button>
-<button id="save-phone-info">Save Info</button>
-</div>
-<!-- --------------- -->
+      </div>
+      <div id="drop">
+        <input id="phone_id" type="text" placeholder="Search by Phone ID" />
+
+        <select id="dropdown_brand">
+          <option value="" disabled selected>Brand Selection</option>
+        </select>
+
+        <select id="dropdown_model">
+          <option value="" disabled selected>Model Selection</option>
+        </select>
+
+        <select id="dropdown_modelNo">
+          <option value="" disabled selected>Model Number Selection</option>
+        </select>
+        <button id="search_btn">Search</button>
+         <button id="reset_btn">Reset</button>
+      </div>
+
+
+      <table id="phonesTable" style="margin-left:-100px;">
+
+        <thead>
+          <tr>
+            <th>Phone Id</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Model No</th>
+            <th>OS</th>
+            <th>Processor</th>
+            <th>Storage</th>
+            <th>Warranty (Yrs)</th>
+            <th>Base Price</th>
+            <th>Total Stock</th>
+            <th>2nd_Hand</th>
+            <th>Date Added</th>
+            <th>Last Updated</th>
+          </tr>
+        </thead>
+        <tbody id="phonesTableBody">
+          <!-- Rows will be added dynamically here -->
+        </tbody>
+      </table>
+    </div>
+  
   </main>
 
   <script type="module">
     import { PopulateDropdown_Phones } from "../PopulateDropdown.js";
     PopulateDropdown_Phones();
-    //Searching Specific Phone Data
-const search=document.getElementById("search_btn")?.addEventListener("click",async()=>{
-    try{
-      const brand=document.getElementById('dropdown_brand').value;
-      const Model=document.getElementById('dropdown_model').value;
-      const ModelNo=document.getElementById('dropdown_modelNo').value;
-      console.log(brand);
-    const res=await fetch('http://localhost:5000/Phones_Filter',{
-        method:"POST",
-        headers:{"Content-type":"application/json"},
-        // body:JSON.stringify({P_name,P_model,brand})
-        body:JSON.stringify({brand,Model,ModelNo})
-    });
-    const res_data=await res.json();
-            const tbody=document.getElementById("phonesTableBody");
-           tbody.innerHTML="";
-            if(res_data.length>0){
-                display_data(tbody,res_data);
-    console.log("sUCCESS Retrieve");
- }else{
-    console.log("error");
- }
+    //load first all data first 10 rows 
+     async function viewData () {
+      try {
+        const res_get = await fetch('http://localhost:5000/Phones_View');
+        const res_data = await res_get.json();//.json() is a method on the Response object.
+        // It reads the response body and parses it as JSON.
+        //Now res_data is the actual data 
+        const tbody = document.getElementById("phonesTableBody");
+        tbody.innerHTML = "";
+        console.log("hello there buddy");
+        console.log(res_data);
 
-    }catch(e){
-console.log(e.message);
+        console.log(res_data[0]?.model);
+        if (res_data.length > 0) {
+          display_data(tbody, res_data);
+          console.log("sUCCESS Retrieve");
+        } else {
+          console.log("error");
+        }
+
+      } catch (err) {
+        console.log(err);
+      }
     }
-  })
+//10 records will be shown by default when the page loads
+  viewData();
+    //Searching Specific Phone Data
 
-  //function for displayin data
-  function display_data(tbody,res_data){
-    let html = "";
-        res_data.forEach(phone => {
-          html += `
+    const search = document.getElementById("search_btn")?.addEventListener("click", async () => {
+      try {
+        const brand = document.getElementById('dropdown_brand').value;
+        const Model = document.getElementById('dropdown_model').value;
+        const ModelNo = document.getElementById('dropdown_modelNo').value;
+        const phone_id = document.getElementById('phone_id').value;
+        console.log(brand);
+        const res = await fetch('http://localhost:5000/Phones_Filter', {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          // body:JSON.stringify({P_name,P_model,brand})
+          body: JSON.stringify({ phoneId: phone_id, brand, Model, ModelNo })
+        });
+        const res_data = await res.json();
+        const tbody = document.getElementById("phonesTableBody");
+        tbody.innerHTML = "";
+        if (res_data.length > 0) {
+          display_data(tbody, res_data);
+          console.log("sUCCESS Retrieve");
+        } else {
+          console.log("error");
+        }
+
+      } catch (e) {
+        console.log(e.message);
+      }
+    })
+
+    //function for displayin data
+    function display_data(tbody, res_data) {
+      let html = "";
+      res_data.forEach(phone => {
+        html += `
        <tr>
-      <td data-column_n="brand" data-original="${phone.Brand}">${phone.Brand}</td>
-      <td data-column_n="model" data-original="${phone.Model}">${phone.Model}</td>
-      <td data-column_n="model_no" data-original="${phone.Model_no}">${phone.Model_no}</td>
-      <td data-column_n="os" data-original="${phone.OS || ''}">${phone.OS || ''}</td>
+        <td data-column_n="phone_id" data-original="${phone.phone_id}">${phone.phone_id}</td>
+      <td data-column_n="Brand" data-original="${phone.Brand}">${phone.Brand}</td>
+      <td data-column_n="Model" data-original="${phone.Model}">${phone.Model}</td>
+      <td data-column_n="Model_no" data-original="${phone.Model_no}">${phone.Model_no}</td>
+      <td data-column_n="os" data-original="${phone.os || ''}">${phone.os || ''}</td>
+      <td data-column_n="Processor" data-original="${phone.Processor || ''}">${phone.Processor || ''}</td>
+      <td data-column_n="p_storage_gb" data-original="${phone.p_storage_gb || ''}">${phone.p_storage_gb || ''}</td>
       <td data-column_n="warranty_period" data-original="${phone.warranty_period || ''}">${phone.warranty_period || ''}</td>
       <td data-column_n="base_price" data-original="${phone.base_price || ''}">${phone.base_price || ''}</td>
       <td data-column_n="total_stock" data-original="${phone.Total_Stock || ''}">${phone.Total_Stock || ''}</td>
@@ -123,48 +161,54 @@ console.log(e.message);
       <td data-column_n="last_updated" data-original="${new Date(phone.last_updated).toLocaleDateString()}">${new Date(phone.last_updated).toLocaleDateString()}</td>
     </tr>
           `;
-        });
+      });
 
-        tbody.innerHTML = html;
-}
-
-    //View Phones
-const view_button=document.getElementById("view_btn")?.addEventListener("click",async()=>{
-    try{
-        const res_get=await fetch('http://localhost:5000/Phones_View');
-        const res_data=await res_get.json();//.json() is a method on the Response object.
-           // It reads the response body and parses it as JSON.
-           //Now res_data is the actual data 
-           const tbody=document.getElementById("phonesTableBody");
-           tbody.innerHTML="";
-           console.log("hello there buddy");
-           console.log(res_data);
-
-           console.log(res_data[0]?.model);
- if(res_data.length>0){
-     display_data(tbody,res_data);
-    console.log("sUCCESS Retrieve");
- }else{
-    console.log("error");
- }
-               // Display data
-      // let html = "";
-      //   res_data.forEach(phone => {
-      //     html += `<tr><td>${phone.Brand}</td><td>${phone.Model}</td><td>${phone.Model_no}</td><td>${phone.OS||''}</td>
-      //    <td>${phone.warranty_period||''}</td> <td>${phone.base_price||''}</td>
-      //     <td>${phone.Total_Stock||''}</td> <td>${phone.scnd_hand_mb||''}</td>
-      //     <td>${new Date(phone.date_added).toLocaleDateString()}</td><td>${new Date(phone.last_updated).toLocaleDateString()}</td></tr>`;
-      //   });
-
-      //   tbody.innerHTML = html;
-
-    }catch(err){
-        console.log(err);
+      tbody.innerHTML = html;
     }
-});
+
+    //View all Phones
+    const view_button = document.getElementById("view_btn")?.addEventListener("click", async () => {
+      try {
+        const res_get = await fetch('http://localhost:5000/Phones_View?param=all');
+        const res_data = await res_get.json();
+        const tbody = document.getElementById("phonesTableBody");
+        tbody.innerHTML = "";
+        console.log("hello there buddy");
+        console.log(res_data);
+
+        if (res_data.length > 0) {
+          display_data(tbody, res_data);
+          console.log("sUCCESS Retrieve");
+        } else {
+          console.log("error");
+        }
+        // Display data
+        // let html = "";
+        //   res_data.forEach(phone => {
+        //     html += `<tr><td>${phone.Brand}</td><td>${phone.Model}</td><td>${phone.Model_no}</td><td>${phone.OS||''}</td>
+        //    <td>${phone.warranty_period||''}</td> <td>${phone.base_price||''}</td>
+        //     <td>${phone.Total_Stock||''}</td> <td>${phone.scnd_hand_mb||''}</td>
+        //     <td>${new Date(phone.date_added).toLocaleDateString()}</td><td>${new Date(phone.last_updated).toLocaleDateString()}</td></tr>`;
+        //   });
+
+        //   tbody.innerHTML = html;
+
+      } catch (err) {
+        console.log(err);
+      }
+    });
+//restting button
+    document.getElementById("reset_btn")?.addEventListener("click", () => {
+      document.getElementById('dropdown_brand').value = "";
+      document.getElementById('dropdown_model').value = "";
+      document.getElementById('dropdown_modelNo').value = "";
+      document.getElementById('phone_id').value = "";
+      viewData(); // Refresh the table to show all data
+    });
 
 
   </script>
   <script src="Phones.js"></script>
 </body>
+
 </html>

@@ -120,3 +120,59 @@ tr:hover {
 .selected_row{
   background-color: #5fb962;
 }
+/* phones view button */
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button-row .right-buttons > button {
+  margin-left:10px;
+}
+
+/* dropdown search row */
+#drop {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: 20px 0;
+}
+
+#drop input,
+#drop select,
+#drop button {
+  min-width: 180px;
+  max-width: 260px;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  font-size: 1rem;
+}
+
+#drop button {
+  min-width: auto;
+  background: #1abc9c;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#drop button:hover {
+  background: #16a085;
+}
+
+@media (max-width: 720px) {
+  #drop {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #drop select,
+  #drop button {
+    width: 100%;
+    max-width: none;
+  }
+}
