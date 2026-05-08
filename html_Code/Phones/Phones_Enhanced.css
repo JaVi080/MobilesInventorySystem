@@ -1,0 +1,345 @@
+/* Phones Page Specific Styling - Enhanced */
+
+/* Page Container */
+#viewPhones {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header Section */
+#viewPhones > div:first-child {
+  margin-bottom: 30px;
+}
+
+#viewPhones h2 {
+  font-size: 2.2rem;
+  color: #2c3e50;
+  font-weight: 800;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 4px solid transparent;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+
+/* Button Row Enhancement */
+.button-row {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 18px 22px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 0 0 1px rgba(102, 126, 234, 0.1);
+  margin-bottom: 25px;
+  border: 1px solid rgba(102, 126, 234, 0.05);
+}
+
+.button-row button {
+  padding: 12px 20px;
+  font-size: 15px;
+  min-width: 130px;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.button-row button:active {
+  transform: scale(0.96);
+}
+
+#view_btn {
+  background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+  box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+#view_btn:hover {
+  box-shadow: 0 8px 24px rgba(26, 188, 156, 0.45);
+  transform: translateY(-3px);
+}
+
+#edit-phone-btn,
+#save-phone-info {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+#edit-phone-btn:hover,
+#save-phone-info:hover {
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.45);
+  transform: translateY(-3px);
+}
+
+/* Search/Filter Row */
+#drop {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 20px;
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+#drop:hover {
+  box-shadow: 0 6px 24px rgba(102, 126, 234, 0.12);
+}
+
+#drop input[type="text"]::placeholder {
+  color: #95a5a6;
+}
+
+#phone_id {
+  flex: 1;
+  min-width: 160px;
+}
+
+#dropdown_brand,
+#dropdown_model,
+#dropdown_modelNo {
+  flex: 1;
+  min-width: 150px;
+}
+
+#search_btn,
+#reset_btn {
+  padding: 11px 18px;
+  min-width: 110px;
+  font-weight: 700;
+}
+
+#search_btn {
+  background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+  box-shadow: 0 4px 12px rgba(26, 188, 156, 0.25);
+}
+
+#search_btn:hover {
+  box-shadow: 0 6px 18px rgba(26, 188, 156, 0.35);
+}
+
+#reset_btn {
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+  box-shadow: 0 4px 12px rgba(127, 140, 141, 0.25);
+}
+
+#reset_btn:hover {
+  background: linear-gradient(135deg, #7f8c8d 0%, #6c7a7d 100%);
+  box-shadow: 0 6px 18px rgba(127, 140, 141, 0.35);
+}
+
+/* Table Container */
+#phonesTable {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05);
+  margin-top: 25px;
+}
+
+/* Table Header Styling */
+#phonesTable thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+#phonesTable th {
+  color: white;
+  font-weight: 800;
+  padding: 18px 16px;
+  text-align: center;
+  border: none;
+  letter-spacing: 0.5px;
+  font-size: 15px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+#phonesTable th::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #f093fb, transparent);
+}
+
+#phonesTable th:first-child {
+  text-align: center;
+  width: 80px;
+}
+
+/* Table Body */
+#phonesTable tbody tr {
+  border-bottom: 1px solid #e8eef2;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#phonesTable tbody tr:hover {
+  background: linear-gradient(90deg, #e8f8f5 0%, #f0f8f6 100%);
+  box-shadow: inset 0 2px 10px rgba(26, 188, 156, 0.1), inset 0 -1px 0 rgba(102, 126, 234, 0.05);
+}
+
+#phonesTable td {
+  padding: 15px 16px;
+  text-align: center;
+  border: none;
+}
+
+#phonesTable td:first-child {
+  font-weight: 700;
+  color: #2c3e50;
+  background: linear-gradient(90deg, rgba(102, 126, 234, 0.02) 0%, transparent 100%);
+}
+
+/* Row Selection Styling */
+#phonesTable tbody tr.selected_row {
+  background: linear-gradient(90deg, #1abc9c 0%, #16a085 100%);
+  color: white;
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.15), 0 2px 8px rgba(26, 188, 156, 0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+#phonesTable tbody tr.selected_row td {
+  color: white;
+  font-weight: 700;
+  border-bottom-color: rgba(255,255,255,0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+#phonesTable tbody tr.selected_row:hover {
+  background: linear-gradient(90deg, #16a085 0%, #138572 100%);
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.2), 0 4px 12px rgba(22, 160, 133, 0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+/* Editing Mode */
+#phonesTable tbody tr.editing_row {
+  background: linear-gradient(90deg, #fff3cd 0%, #fffbeb 100%) !important;
+  border: 2px solid #ffc107;
+  outline: 3px solid #ff9800;
+  box-shadow: 0 0 20px rgba(255, 152, 0, 0.4), inset 0 0 12px rgba(255, 193, 7, 0.2), inset 0 1px 0 rgba(255,255,255,0.5);
+  animation: edit-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes edit-pulse {
+  0%, 100% {
+    box-shadow: 0 0 16px rgba(255, 152, 0, 0.3), inset 0 0 12px rgba(255, 193, 7, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(255, 152, 0, 0.5), inset 0 0 16px rgba(255, 193, 7, 0.25);
+  }
+}
+
+#phonesTable tbody tr.editing_row td {
+  background: transparent;
+}
+
+#phonesTable td[contenteditable="true"] {
+  background: linear-gradient(135deg, #ffffeb 0%, #fffacd 100%);
+  border: 2px solid #ffc107;
+  border-radius: 6px;
+  padding: 10px 12px;
+  cursor: text;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+#phonesTable td[contenteditable="true"]:focus {
+  background: linear-gradient(135deg, #fffacd 0%, #ffff99 100%);
+  border-color: #ff9800;
+  box-shadow: 0 0 12px rgba(255, 152, 0, 0.3), inset 0 0 6px rgba(255, 193, 7, 0.2);
+  outline: none;
+}
+
+/* Responsive Table */
+@media (max-width: 1024px) {
+  #phonesTable {
+    font-size: 13px;
+  }
+
+  #phonesTable th,
+  #phonesTable td {
+    padding: 12px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  #viewPhones {
+    padding: 0 15px;
+  }
+
+  #phonesTable {
+    overflow-x: auto;
+    display: block;
+  }
+
+  #phonesTable thead,
+  #phonesTable tbody,
+  #phonesTable th,
+  #phonesTable td,
+  #phonesTable tr {
+    display: block;
+  }
+
+  #phonesTable thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  #phonesTable tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background: white;
+  }
+
+  #phonesTable td {
+    position: relative;
+    padding-left: 50%;
+    border: none;
+    border-bottom: 1px solid #ecf0f1;
+  }
+
+  #phonesTable td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 6px;
+    font-weight: 700;
+    color: #2c3e50;
+  }
+}
+
+/* Smooth Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#phonesTable tbody tr {
+  animation: fadeIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.button-row {
+  animation: slideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#drop {
+  animation: slideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}

@@ -7,94 +7,128 @@
       font-family: Arial, sans-serif;
     }
     body {
-      display: flex;
-      height: 100vh;
+      min-height: 100vh;
       background-color: #f4f6f8;
+      margin: 0;
+      overflow-x: hidden;
     }
+
 h1, h2, p {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  margin-left:150px;
-
 }
-  
-    /* ===== Sidebar ===== */
+
+header,
+main {
+  margin-left: 250px; /* Shift content right of fixed sidebar */
+  width: calc(100% - 250px);
+}
+
+header {
+  padding: 22px 30px;
+}
+
+    /* ===== Sidebar Styling ===== */
     nav.sidebar {
-      width: 220px;
-      background: #2c3e50;
+      width: 250px; /* Increased width for better spacing */
+      background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%); /* Dark blue gradient background */
       color: white;
       display: flex;
       flex-direction: column;
       padding-top: 40px;
       position: fixed;
       height: 100%;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+      z-index: 100; /* Ensure sidebar stays on top */
+    }
+
+    nav.sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #ecf0f1; /* Light gray for title */
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Text shadow for readability */
     }
 
     nav.sidebar a {
-      color: white;
+      color: #ecf0f1; /* Light gray for links */
       text-decoration: none;
-      padding: 14px 20px;
+      padding: 15px 25px; /* More padding for better click area */
       font-size: 18px;
       display: block;
-      transition: background 0.3s;
+      transition: all 0.3s ease; /* Smooth transitions */
+      border-radius: 8px; /* Rounded corners */
+      margin: 5px 15px; /* Margin for spacing */
+      position: relative;
     }
 
     nav.sidebar a:hover {
-      background: #1abc9c;
+      background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); /* Teal gradient on hover */
+      color: white;
+      transform: translateX(5px); /* Slight slide effect */
+      box-shadow: 0 4px 8px rgba(26, 188, 156, 0.3); /* Glow effect */
     }
 
-    /* ===== Main Content ===== */
+    nav.sidebar a.active {
+      background: #1abc9c; /* Active link background */
+      color: white;
+    }
+
+    /* ===== Main Content Area ===== */
     main {
-      margin-left: 220px;
+      margin-left: 250px; /* Adjusted for new sidebar width */
       padding: 30px;
-      width: 100%;
+      width: calc(100% - 250px); /* Full width minus sidebar */
+      background-color: #f4f6f8; /* Light background */
+      min-height: 100vh;
     }
-
- 
 
     section.active {
       display: block;
     }
 
-    /* ===== Boxes for Links ===== */
+    /* ===== Dashboard Boxes ===== */
   .box-container {
   display: flex;
-  flex-direction: column;   /* vertical stacking */
-  gap: 25px;                /* space between boxes */
+  flex-direction: column;   /* Vertical stacking of boxes */
+  gap: 25px;                /* Space between boxes */
   margin-top: 40px;
   margin-left: -100px;
-  align-items: center;  /* align to left side */
+  align-items: center;  /* Center align boxes */
 }
 
-/* Each box */
+/* Individual Box Styling */
 .box {
-  background: white;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); /* White to light gray gradient */
   border-radius: 12px;
-  border: 3px solid rgba(12, 10, 69, 0.464); /* colorful border — see below */
-  box-shadow: 0 4px 8px hsla(0, 46%, 63%, 0.1);
-  width: 250px;
-  height: 100px;
+  border: 2px solid rgba(52, 73, 94, 0.2); /* Subtle border with theme color */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Soft shadow */
+  width: 280px; /* Slightly wider */
+  height: 120px; /* Taller for better proportion */
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s, background 0.3s, border-color 0.3s;
+  transition: all 0.3s ease; /* Smooth hover effects */
+  cursor: pointer;
 }
-
 
     .box a {
       text-decoration: none;
-      color: #2c3e50;
-      font-size: 18px;
+      color: #2c3e50; /* Dark blue text */
+      font-size: 20px; /* Larger font */
       font-weight: bold;
+      text-align: center;
     }
 
     .box:hover {
-      background: #1abc9c;
-      transform: translateY(-5px);
+      background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); /* Teal gradient on hover */
+      transform: translateY(-5px) scale(1.02); /* Lift and slight scale */
+      box-shadow: 0 8px 20px rgba(26, 188, 156, 0.3); /* Enhanced shadow */
     }
 
     .box:hover a {
-      color: white;
+      color: white; /* White text on hover */
     }
 
