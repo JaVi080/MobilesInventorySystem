@@ -1,83 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vire Customerst</title>
-     <link rel="stylesheet" href="../styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Customers</title>
+  <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <main>
-    <!-- -------- -->
-   <nav id="navbar"></nav>
+  <header>
+    <h1>Mobile Phones Inventory System</h1>
+  </header>
 
+   <nav class="sidebar">
+    <h2 style="text-align:center; margin-bottom:20px;">Menu</h2>
+    <a href="../../index.html">Dashboard</a>
+    <a href="/html_Code/Phones/Phones.html">Phones</a>
+    <a href="/html_Code/Supplier/Supplier.html">Suppliers</a>
+    <a href="Customer.html">Customers</a>
+  </nav>
+
+  <main>
+
+    <!-- -------- -->
      <div id="viewCustomers" style="padding:20px;">
-      <div>
-  <h2 >View Customers Info</h2>
-    <button id="view_cust_Info">View Customers Info</button>
-    </div>
-  <table id="phonesTable" style="margin-left:-200px;" >
+      <h2>View / Update Customers Info</h2>
+      <div class="button-row">
+        <button id="view_cust_Info">View All Customers</button>
+        <div class="right-buttons">
+          <button id="edit-cust-btn">Edit Info</button>
+          <button id="save-cust-info">Save Info</button>
+        </div>
+      </div>
+      <div id="drop">
+        <input id="customer_id" type="text" placeholder="Search by Customer ID" />
+        <input id="customer_name" type="text" placeholder="Search by Customer Name" />
+
+         <select id="dropdown_city">
+          <option value="" disabled selected>By City</option>
+         </select>
+        <button id="search_btn">Search</button>
+        <button id="reset_btn">Reset</button>
+      </div>
+      <table id="phonesTable">
     <thead>
       <tr>
-        <th>Customer ID </th>
+        <th>Customer ID</th>
         <th>Customer Name</th>
         <th>City</th>
         <th>Email</th>
         <th>Phone_No</th>
         <th>Address</th>
-        <!-- <th>No_Of_Orders</th> -->
         <th>Added Date</th>
-      <th>Last Updated </th> 
-    
+        <th>Last Updated</th>
       </tr>
     </thead>
     <tbody id="phonesTableBody">
       <!-- Rows will be added dynamically here -->
     </tbody>
   </table>
-  </main>
 </div>
-<script>
-    // loding navbar
-    fetch('navbar.html').then(res=>res.text()).then(data=>document.getElementById('navbar').innerHTML=data);
-</script>
- <script >
-    //View Customers 
-const view_button=document.getElementById("view_cust_Info")?.addEventListener("click",async()=>{
-    try{
-        const res_get=await fetch('http://localhost:5000/Customers_View');
-        const res_data=await res_get.json();//.json() is a method on the Response object.
-           // It reads the response body and parses it as JSON.
-           //Now res_data is the actual data 
-           const tbody=document.getElementById("phonesTableBody");
-           tbody.innerHTML="";
-           console.log("hello there buddy");
-           console.log(res_data);
+<!-- --------------- -->
+  </main>
+  <script src="Customers.js"></script>
 
-           console.log(res_data[0]?.model);
- if(res_data.length>0){
-    console.log("sUCCESS Retrieve");
- }else{
-    console.log("customers view error")
- }
-               // Display data
-      let html = "";
-    //   later on also have to add no of orders
-        res_data.forEach(cust => {
-          html += `<tr><td>${cust.customer_id}</td><td>${cust.fName + ' ' + cust.lName}</td>
-         <td>${cust.city||''}</td>
-          <td>${cust.email||''}</td>
-        <td>${cust.phone_no||''}</td>
-      <td>${cust.Address||''}</td>
-          <td>${new Date(cust.date_added).toLocaleDateString()}</td><td>${new Date(cust.last_updated).toLocaleDateString()}</td></tr>`;
-        });
-
-        tbody.innerHTML = html;
-
-    }catch(err){
-        console.log(err);
-    }
-});
-  </script>
 </body>
 </html>

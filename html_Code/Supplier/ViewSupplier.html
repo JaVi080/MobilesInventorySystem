@@ -23,11 +23,25 @@
  
     <!-- -------- -->
      <div id="viewPhones" style="padding:20px;">
-      <div>
-  <h2 >View / Update Suppliers Info</h2>
-    <button id="view_Supp_Info">View Suppliers Info</button>
-    </div>
-  <table id="phonesTable">
+      <h2>View / Update Suppliers Info</h2>
+      <div class="button-row">
+        <button id="view_Supp_Info">View All Suppliers</button>
+        <div class="right-buttons">
+          <button id="edit-supp-btn">Edit Info</button>
+          <button id="save-supp-info">Save Info</button>
+        </div>
+      </div>
+      <div id="drop">
+        <input id="supplier_id" type="text" placeholder="Search by Supplier ID" />
+        <input id="supplier_name" type="text" placeholder="Search by Supplier Name" />
+
+         <select id="dropdown_brand">
+          <option value="" disabled selected>By City</option>
+         </select>
+        <button id="search_btn">Search</button>
+        <button id="reset_btn">Reset</button>
+      </div>
+      <table id="phonesTable">
     <thead>
       <tr>
         <th>SUPPLIER ID</th>
@@ -52,41 +66,7 @@
 </div>
 <!-- --------------- -->
   </main>
-  <script >
-    //View Phones
-const view_button=document.getElementById("view_Supp_Info")?.addEventListener("click",async()=>{
-    try{
-        const res_get=await fetch('http://localhost:5000/Suppliers_View');
-        const res_data=await res_get.json();//.json() is a method on the Response object.
-           // It reads the response body and parses it as JSON.
-           //Now res_data is the actual data 
-           const tbody=document.getElementById("phonesTableBody");
-           tbody.innerHTML="";
-           console.log("hello there buddy");
-           console.log(res_data);
-
-           console.log(res_data[0]?.model);
- if(res_data.length>0){
-    console.log("sUCCESS Retrieve");
- }else{
-    console.log("error");
- }
-               // Display data
-      let html = "";
-        res_data.forEach(phone => {
-          html += `<tr><td>${phone.supplier_id}</td><td>${phone.contact_person_fName + ' ' + phone.contact_person_lName}</td>
-          <td>${phone.Company_Name}</td><td>${phone.supply_type}</td> <td>${phone.city||''}</td>
-          <td>${phone.country||''}</td> <td>${phone.email||''}</td>
-          <td>${phone.phone_no_1||''}</td><td>${phone.phone_no_2||''}</td><td>${phone.Address||''}</td>
-          <td>${new Date(phone.date_added).toLocaleDateString()}</td><td>${new Date(phone.last_updated).toLocaleDateString()}</td></tr>`;
-        });
-
-        tbody.innerHTML = html;
-
-    }catch(err){
-        console.log(err);
-    }
-});
-  </script>
+  <script src="Supplier.js"></script>
+ 
 </body>
 </html>

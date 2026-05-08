@@ -92,7 +92,7 @@ save_btn.addEventListener("click", async () => {
 
 async function update_database(phone_id, data) {
   try {
-    const res = await fetch('http://localhost:5000/UpdatePhones', {
+    const res = await fetch('http://localhost:5000/api/UpdatePhones', {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

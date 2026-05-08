@@ -101,3 +101,5 @@ res_cust_data.forEach(e=>{
   document.getElementById("drop-cust-id").appendChild(option_names);
 })
   }
+
+  

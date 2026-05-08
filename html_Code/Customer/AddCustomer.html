@@ -67,7 +67,7 @@ const act_form=document.getElementById("Customer_form")?.addEventListener("submi
     }
     console.log(data);
     try{
-    const res=await fetch('http://localhost:5000/AddCustomers',{
+    const res=await fetch('http://localhost:5000/api/AddCustomers',{
         method:"POST",
         headers:{"Content-type":"application/json"},
         // body:JSON.stringify({P_name,P_model,brand})

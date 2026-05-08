@@ -2,7 +2,7 @@
 
 const express = require('express'); // allow easy communication between frontend and backend
 const cors=require('cors'); // allow frontend to access the backend api
-
+const pool = require('./db');// database connection
 const path =require('path');
 
 // express
@@ -21,138 +21,9 @@ app.use(cors());
 app.use(express.json()); // to parse incoming data
 app.use (express.static(path.join(__dirname, 'html_Code')));//serves frontend files
 
-const {createPool}=require('mysql2');
-const pool=createPool({
-    host:"localhost",
-    user:'root',
-    password:"0348jav.",
-   database:"MobileInventory",
-   connectionLimit:10
-}).promise();
 
-//inserting data OF Phones
-app.post('/AddPhones',async(req,res)=>{
-   try{
-const {brand,model,model_no,OS,Processor,Storage,Ram,Warranty}=req.body;
- if (!brand || !model||!model_no){
-        return res.status(400).json({ error: "Name and model required" });
- }
- await pool.query("insert into Phones (brand, model, model_no,os,Processor,p_storage_gb,ram_gb,Warranty_period) values (?,?,?,?,?,?,?,?) ",
-    [brand,model,model_no,OS,Processor,Storage,Ram,Warranty]);
 
-      res.json({ success: true, message: "Phone added" });
-   }catch(err){
-      console.log(err.message);
-   }
-})
 
-//Viewing Phones Data 
-app.get('/Phones_View',async(req,res)=>{
-   try{
-    const param = req.query.param;
-    if (param === 'all'){
-        console.log("All data requested");
-        const [phones]=await pool.query('select * from Phones');
-        return res.json(phones);
-    }else{
-        console.log("Limited data requested");
-    const [phones]=await pool.query('select * from Phones limit 10');
-    res.json(phones);
-    }
-   console.log("hello there")
- //  console.log(phones[0]);
-
-   }catch(err){
-      console.log(err.message);
-      res.status(500).json({ error: 'Server error' });
-   }
-})
-//Filtering Pones
-app.post('/Phones_Filter', async (req, res) => {
-  try {
-    const { phoneId, brand, Model, ModelNo } = req.body;
-
-    let query = 'SELECT * FROM Phones WHERE 1=1';
-    const params = [];
-
-    if (phoneId) {
-      query += ' AND phone_id = ?';
-      params.push(phoneId);
-    }
-    if (brand) {
-      query += ' AND Brand = ?';
-      params.push(brand);
-    }
-    if (Model) {
-      query += ' AND Model = ?';
-      params.push(Model);
-    }
-    if (ModelNo) {
-      query += ' AND Model_no = ?';
-      params.push(ModelNo);
-    }
-
-    const [phones] = await pool.query(query, params);
-    return res.json(phones);
-
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-//updating phones data 
-// app.options('/UpdatePhones',cors());
-app.patch('/UpdatePhones',async(req,res)=>{
-  
-   try{
-   const {phone_id,update_data}=req.body;
-  let fields=Object.keys(update_data);
-  let values=Object.values(update_data);
-  let sql_query=fields.map(f=>`${f}=?`).join(",");
-  for(var v of values){
-    console.log(v);
-  }
-  values.push(phone_id);
- await pool.query(`Update Phones set ${sql_query} where phone_id=?`,values);
-
-      res.json({ success: true, message: "Phone Info Updated" });
-   }catch(err){
-      console.log(err.message);
-   }
-})
-
-//Inserting data of SUPPLIERS 
-app.post('/AddSuppliers',async(req,res)=>{
-    try{
-        console.log("I AM IN SUPPLIER POST");
-const{Supplier_Name,Company_Name,City,Country,Email,Phone_1,Phone_2,Supply_Type,Address}=req.body;
-if(!Company_Name||!Supplier_Name){
-    return res.status(400).json({error:"Company Name and Supplier Name is requires"});
-}
-const [first_Name,...rest]=Supplier_Name.split(" ");
-lastName=rest.join(" ");
-console.log(lastName);
-await pool.query("insert into Suppliers (Company_Name,contact_person_fName,contact_person_lName,city,country,email,phone_no_1,phone_no_2,supply_type,Address) values(?,?,?,?,?,?,?,?,?,?)",
-    [Company_Name,first_Name,lastName,City,Country,Email,Phone_1,Phone_2,Supply_Type,Address]
-);
-res.json({success:true,message:"SUPPLIER Added"})
-    }catch(err){
-console.log(err.message);
-    }
-
-})
-//Viewing Suppliers Data
-app.get('/Suppliers_View',async(req,res)=>{
-   try{
-   const [SUPPLIERS]=await pool.query('select * from  Suppliers');
-   console.log("hello there SUPPLIERS")
- //  console.log(phones[0]);
-  res.json(SUPPLIERS);
-   }catch(err){
-      console.log(err.message);
-   }
-})
 //Stock in Data 
 app.post('/Stock_in',async(req,res)=>{
 try{
@@ -171,37 +42,7 @@ console.log(e.message);
 }
 })
 
-//Inserting data into Customers
 
-app.post('/AddCustomers',async(req,res)=>{
-    try{
-const{fName,last_Name,City,Email,Phone,Address}=req.body;
-if(!fName){
-    return res.status(400).json({error:"Customer Name is requires"});
-}
-// const [first_Name,...rest]=supp_full_name.split(" ");
-// lastName=rest.join(" ");
-// console.log(lastName);
-await pool.query("insert into Customer (fName,lName,city,email,phone_no,Address) values(?,?,?,?,?,?)",
-    [fName,last_Name,City,Email,Phone,Address]
-);
-res.json({success:true,message:"Customer Added"})
-    }catch(err){
-console.log(err.message);
-    }
-
-})
-//View Customer Data 
-app.get('/Customers_View',async(req,res)=>{
-   try{
-   const [Customers]=await pool.query('select * from Customer');
-   console.log("hello there Customers")
- //  console.log(phones[0]);
-  res.json(Customers);
-   }catch(err){
-      console.log(err.message);
-   }
-})
 
 //Inserting data into Employees
 
@@ -254,6 +95,12 @@ await pool.query("insert into sales(Customer_id,SalesPerson_id,mb_model_no,No_Ph
 console.log(e.message);
 }
 })
+const supplierRoutes=require('./routes/admin-mnage-supplier');
+const phoneRoutes=require('./routes/admin-manage-phones');
+const customerRoutes=require('./routes/admin-manage-cust');
+app.use('/api',supplierRoutes);
+app.use('/api',phoneRoutes);
+app.use('/api',customerRoutes);
 
 const PORT=5000;
 app.listen(PORT, () => {
