@@ -1,10 +1,11 @@
 
-const {createPool} = require('mysql2');
+require('dotenv').config();
+const { createPool } = require('mysql2');
 const pool = createPool({
-    host: "localhost",
-    user: 'root',
-    password: "0348jav.",
-    database: "MobileInventory",
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     connectionLimit: 10
 }).promise();
 module.exports = pool;
