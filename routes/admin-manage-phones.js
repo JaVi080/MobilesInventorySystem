@@ -75,13 +75,20 @@ router.post('/Phones_Filter', async (req, res) => {
 
 //updating phones data 
 // app.options('/UpdatePhones',cors());
+// field whitelisting
+// Unauthorized Column Manipulation
+const ALLOWED_COLUMNS = ['Brand', 'Model', 'Model_no', 'os', 'Processor', 
+                          'p_storage_gb', 'ram_gb', 'Warranty_period'];
 router.patch('/UpdatePhones',async(req,res)=>{
   
    try{
    const {phone_id,update_data}=req.body;
-  let fields=Object.keys(update_data);
-  let values=Object.values(update_data);
-  let sql_query=fields.map(f=>`${f}=?`).join(",");
+  // let fields=Object.keys(update_data); // can cause sql injection attack so allowed_columns names used 
+  const safeFields = Object.keys(update_data)
+        .filter(field => ALLOWED_COLUMNS.includes(field));
+  const values = safeFields.map(field => update_data[field]);
+  // let sql_query=fields.map(f=>`${f}=?`).join(",");
+  let sql_query = safeFields.map(f => `${f}=?`).join(",");
   for(var v of values){
     console.log(v);
   }
