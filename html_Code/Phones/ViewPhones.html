@@ -81,6 +81,7 @@
     </div>
   
   </main>
+    <script src="../utils/helperApi.js"></script>
 
   <script type="module">
     import { PopulateDropdown_Phones } from "../PopulateDropdown.js";
@@ -88,7 +89,7 @@
     //load first all data first 10 rows 
      async function viewData () {
       try {
-        const res_get = await fetch('http://localhost:5000/api/Phones_View');
+        const res_get = await secureFetch('http://localhost:5000/api/Phones_View');
         const res_data = await res_get.json();//.json() is a method on the Response object.
         // It reads the response body and parses it as JSON.
         //Now res_data is the actual data 
@@ -120,7 +121,7 @@
         const ModelNo = document.getElementById('dropdown_modelNo').value;
         const phone_id = document.getElementById('phone_id').value;
         console.log(brand);
-        const res = await fetch('http://localhost:5000/api/Phones_Filter', {
+        const res = await secureFetch('http://localhost:5000/api/Phones_Filter', {
           method: "POST",
           headers: { "Content-type": "application/json" },
           // body:JSON.stringify({P_name,P_model,brand})
@@ -170,7 +171,7 @@
     //View all Phones
     const view_button = document.getElementById("view_btn")?.addEventListener("click", async () => {
       try {
-        const res_get = await fetch('http://localhost:5000/api/Phones_View?param=all');
+        const res_get = await secureFetch('http://localhost:5000/api/Phones_View?param=all');
         const res_data = await res_get.json();
         const tbody = document.getElementById("phonesTableBody");
         tbody.innerHTML = "";

@@ -55,7 +55,8 @@
       </div>
       <button id="Add Phone" type="submit" style="padding:20px;margin-left:100px">Add Phone</button>
     </form>
-    
+
+    <script src="../utils/helperApi.js"></script>
     <script>
       //Inserting DATA
 const act_form=document.getElementById("phone_form")?.addEventListener("submit",async (e)=>{
@@ -70,7 +71,7 @@ const act_form=document.getElementById("phone_form")?.addEventListener("submit",
     }
     console.log(data);
     try{
-    const res=await fetch('http://localhost:5000/AddPhones',{
+    const res=await secureFetch('http://localhost:5000/api/AddPhones',{
         method:"POST",
         headers:{"Content-type":"application/json"},
         // body:JSON.stringify({P_name,P_model,brand})

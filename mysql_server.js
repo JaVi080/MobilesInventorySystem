@@ -98,9 +98,14 @@ app.post('/Sales', async (req, res) => {
 const supplierRoutes = require('./routes/admin-mnage-supplier');
 const phoneRoutes = require('./routes/admin-manage-phones');
 const customerRoutes = require('./routes/admin-manage-cust');
-app.use('/api', supplierRoutes);
-app.use('/api', phoneRoutes);
-app.use('/api', customerRoutes);
+const authRoutes = require('./routes/auth');
+const verifyToken = require('./middleware/authMiddleware');
+
+app.use('/api', authRoutes);
+app.use('/api',supplierRoutes);
+app.use('/api',verifyToken,phoneRoutes);
+app.use('/api',customerRoutes);
+
 
 
 // Error handler LAST (catches errors from everything above)
