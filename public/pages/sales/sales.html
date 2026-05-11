@@ -1,104 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-      <link rel="stylesheet" href="../../css/main.css">
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phones</title>
+   <link rel="stylesheet" href="../../css/main-part2.css">
+   </head>
 <body>
-      <header>
-    <h1>Mobile Phones Inventory System</h1>
+  <header>
+
   </header>
 
    <nav class="sidebar">
     <h2 style="text-align:center; margin-bottom:20px;">Menu</h2>
-     <a href="../../index.html">Dashboard</a>
+    <a href="../../index.html">Dashboard</a>
     <a href="../phones/Phones.html">Phones</a>
     <a href="../suppliers/Supplier.html">Suppliers</a>
     <a href="../customers/Customer.html">Customers</a>
-    <a href="../employees/employe.html">Employees</a>
-    <a href="sales.html">Sale</a>
-    <a href="Stock.html">Stock In</a>
+    <a href="../employees/Employee.html">Employees</a>
+      <a href="Sales.html">Sales</a>
+     <a href="../Stock.html">Stock In </a>
   </nav>
-    <form id="Sale_form">
-      <div class="form-grid">
-           <div class="form-group">
-          <label for="Cust_Id">Customer Id:</label>
-          <input type="number" id="cust_id" name="cust_id" required>
-            <!-- <select id="dropdown_cust_ids" >
-      <option value="" disabled selected>Customer Id Selection</option>
-    </select> -->
 
-         <div class="form-group">
-          <label for="emp_Id">EMPLOYEE Id:</label>
-          <input type="number" id="emp_id" name="emp_id" required>
-            <!-- <select id="dropdown_emp_ids" >
-      <option value="" disabled selected>Employer Id Selection</option>
-    </select> -->
-        </div>
-
-     <div class="form-group">
-          <label for="Model_no">MODEL NUMBER:</label>
-            <!-- <select id="dropdown_modelNo" >
-      <option value="" disabled selected>Model no Selection</option>
-    </select> -->
-    <input type="text" id="Model_no" name="Model_No" required>
-        </div>
-            <div class="form-group">
-          <label for="Phones_Sale">No of Phones For Sale:</label>
-          <input type="number" id="Phones_Sale" name="Phones_Sale" required>
-        </div>
-      
-        <div class="form-group">
-          <label for="Selling Price">Selling Price</label>
-          <input type="text" id="Selling Price" name="Selling_Price" >
-        </div>
-        <div class="form-group">
-          <label for="Deposit">Deposit Cash :</label>
-          <input type="text" id="Deposit" name="Deposit"  required>
-        </div>
+  <main>
+      <section id="phones">
+      <h2>Sales Section</h2>
+      <div class="box-container">
+        <div class="box"><a href="add.html">Add Sales</a></div>
+        <div class="box"><a href="viewSales.html">View Sales</a></div>
+        <div class="box"><a href="#">Update Sales</a></div>
       </div>
-      <button id="Sale" type="submit" style="margin-top: 400px; width: 100px ; height: 30px;">SALE</button>
-    </form>
-      <!-- <script type="module">
-    import { Sales_PopulateDropDown} from "./Supplier/PopularDropdown.js";
-    Sales_PopulateDropDown();
-    </script> -->
-      <script>
-      //Inserting DATA
-const act_form=document.getElementById("Sale_form")?.addEventListener("submit",async (e)=>{
-    e.preventDefault();
-  
-    // const P_model=document.getElementById("Model").value.trim(); 
+    </section>
 
-    const formdata=new FormData(e.target);
-    const data={};
-    for(let[key,values] of formdata.entries()){
-        data[key]=values.trim();
-    }
-    console.log(data);
-    try{
-    const res=await fetch('http://localhost:5000/Sales',{
-        method:"POST",
-        headers:{"Content-type":"application/json"},
-        // body:JSON.stringify({P_name,P_model,brand})
-        body:JSON.stringify(data)
-    });
-    const res_data=await res.json();
-    if(res_data.success){
-        console.log("hello there")
-        alert("Saled Successfully");
-        document.getElementById("Sale_form").reset();
-    }else{
-        alert("Error"+(res_data.error()||"unknown"));
-        console.log("error");
-    }
-}catch(err){
-    console.log(err.message+"Req Failed");
-}
-});
-
-    </script>
+   
+  </main>
+  <!-- <script src="InventoryHandler.js"></script> -->
 </body>
 </html>

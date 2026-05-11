@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Sales</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <header>
+    <h1>Mobile Phones Inventory System</h1>
+  </header>
+
+  <nav class="sidebar">
+    <h2 style="text-align:center; margin-bottom:20px;">Menu</h2>
+    <a href="../../index.html">Dashboard</a>
+    <a href="../phones/Phones.html">Phones</a>
+    <a href="../suppliers/Supplier.html">Suppliers</a>
+    <a href="../customers/Customer.html">Customers</a>
+    <a href="../employees/employe.html">Employees</a>
+    <a href="../sales/sales.html">Sale</a>
+    <a href="../stock.html">Stock In</a>
+  </nav>
+
+  <main>
+    <div id="salesView" style="padding:20px;">
+      <h2>View / Update Sales Records</h2>
+      <div class="button-row">
+        <button id="view_sales_btn">View All Sales</button>
+        <div class="right-buttons">
+          <button id="edit-sales-btn">Edit Info</button>
+          <button id="save-sales-info">Save Info</button>
+        </div>
+      </div>
+      <div id="search-block" style="margin-top:16px; margin-bottom:16px; display:flex; gap:12px; flex-wrap:wrap;">
+        <input id="sale_search_id" type="text" placeholder="Search by Sales ID" />
+        <input id="sale_search_customer" type="text" placeholder="Search by Customer Name" />
+        <button id="search_sales_btn">Search</button>
+        <button id="reset_sales_btn">Reset</button>
+      </div>
+      <div class="table-container">
+        <table id="salesTable">
+          <thead>
+            <tr>
+              <th>Sales ID</th>
+              <th>Customer Name</th>
+              <th>Employee ID</th>
+              <th>Model No</th>
+              <th>Quantity</th>
+              <th>Selling Price</th>
+              <th>Deposit</th>
+              <th>Total Price</th>
+              <th>Pending Amount</th>
+              <th>Quality</th>
+              <th>Sales Date</th>
+            </tr>
+          </thead>
+          <tbody id="salesTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/helperApi.js"></script>
+  <script src="../../js/Sales.js"></script>
+</body>
+</html>

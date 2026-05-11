@@ -50,6 +50,7 @@ const phoneRoutes=require('./src/routes/phone.routes')
 const customerRoutes = require('./src/routes/customer.routes');
 const employeeRoutes = require('./src/routes/employee.routes');
 const authRoutes = require('./src/routes/auth.routes');
+const salesRoutes = require('./src/routes/sales.routes');
 const verifyToken = require('./src/middleware/auth.js');
 
 app.use('/api', authRoutes);
@@ -57,6 +58,7 @@ app.use('/api',verifyToken,supplierRoutes);
 app.use('/api',verifyToken,phoneRoutes);
 app.use('/api',verifyToken,customerRoutes);
 app.use('/api',verifyToken,employeeRoutes);
+app.use('/api',verifyToken,salesRoutes);
 
 
 
@@ -73,5 +75,3 @@ const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
-
-module.exports = pool;
