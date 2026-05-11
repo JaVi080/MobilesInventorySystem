@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Employees</title>
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/phones.css">
+</head>
+<body>
+  <header>
+    <h1>Mobile Phones Inventory System</h1>
+  </header>
+  <nav class="sidebar">
+    <h2 style="text-align:center; margin-bottom:20px;">Menu</h2>
+      <a href="../../index.html">Dashboard</a>
+    <a href="../phones/Phones.html">Phones</a>
+    <a href="../suppliers/Supplier.html">Suppliers</a>
+    <a href="../customers/Customer.html">Customers</a>
+    <a href="employe.html">Employees</a>
+    <a href="../sales.html">Sale</a>
+    <a href="../stock.html">Stock In</a>
+  </nav>
+  <main>
+    <div id="viewPhones" style="padding:20px;">
+      <div>
+        <h2>View / Update Employees</h2>
+        <div class="button-row">
+          <button id="view_btn">View Employees</button>
+          <div class="right-buttons">
+            <a href="add.html" style="text-decoration:none;"><button style="background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);">Add Employee</button></a>
+            <button id="edit-emp-btn">Edit Info</button>
+            <button id="save-emp-info">Save Info</button>
+          </div>
+        </div>
+      </div>
+      <div id="drop">
+        <input id="employe_id" type="text" placeholder="Search by Employee ID" />
+        <input id="emp_name" type="text" placeholder="Search by Name" />
+        <input id="city" type="text" placeholder="Search by City" />
+        <input id="min_salary" type="number" placeholder="Min Salary" />
+        <input id="max_salary" type="number" placeholder="Max Salary" />
+        <button id="search_btn">Search</button>
+        <button id="reset_btn">Reset</button>
+      </div>
+
+      <div id="phonesTableContainer">
+        <table id="phonesTable">
+          <thead>
+            <tr>
+              <th>Emp ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>DOB</th>
+              <th>City</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Address</th>
+              <th>Position</th>
+              <th>Hiring Date</th>
+              <th>Salary</th>
+              <th>Last Updated</th>
+            </tr>
+          </thead>
+          <tbody id="employeesTableBody">
+            <!-- Rows will be added dynamically here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+  
+  <script src="../../js/helperApi.js"></script>
+  <script src="../../js/employees.js"></script>
+</body>
+</html>

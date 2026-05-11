@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Employee - Mobile Phones Inventory System</title>
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <header>
+    <h1>Mobile Phones Inventory System</h1>
+  </header>
+  <nav class="sidebar">
+    <h2 style="text-align:center; margin-bottom:20px;margin-left:20px">Menu</h2>
+    <a href="../../index.html">Dashboard</a>
+    <a href="../phones/Phones.html">Phones</a>
+    <a href="../suppliers/view.html">Suppliers</a>
+    <a href="../customers/Customer.html">Customers</a>
+    <a href="employe.html">Employees</a>
+    <a href="../sales.html">Sale</a>
+    <a href="../stock.html">Stock In</a>
+  </nav>
+  <main>
+    <form id="Employee_form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="fName">First Name:</label>
+          <input type="text" id="fName" name="fName" required>
+        </div>
+        <div class="form-group">
+          <label for="lName">Last Name:</label>
+          <input type="text" id="lName" name="lName" required>
+        </div>
+        <div class="form-group">
+          <label for="DOB">Date of Birth:</label>
+          <input type="date" id="DOB" name="DOB" required>
+        </div>
+        <div class="form-group">
+          <label for="city">City:</label>
+          <input type="text" id="city" name="city" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email (@gmail.com):</label>
+          <input type="email" id="email" name="email" pattern=".*@gmail\.com$" required>
+        </div>
+        <div class="form-group">
+          <label for="phone_no">Phone No:</label>
+          <input type="text" id="phone_no" name="phone_no" required>
+        </div>
+        <div class="form-group">
+          <label for="Address">Address:</label>
+          <input type="text" id="Address" name="Address" required>
+        </div>
+        <div class="form-group">
+          <label for="position">Position:</label>
+          <select id="position" name="position" required style="padding: 12px 15px; border: 2px solid #e1e8ed; border-radius: 8px; font-size: 16px;">
+            <option value="Technician">Technician</option>
+            <option value="Manager">Manager</option>
+            <option value="Salesperson">Salesperson</option>
+            <option value="Admin">Admin</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="Hiring_Date">Hiring Date:</label>
+          <input type="date" id="Hiring_Date" name="Hiring_Date" required>
+        </div>
+        <div class="form-group">
+          <label for="salary">Salary:</label>
+          <input type="number" step="0.01" id="salary" name="salary" required>
+        </div>
+      </div>
+      <button id="Add_Employee" type="submit" style="padding:20px;margin-left:100px; width:200px">Add Employee</button>
+    </form>
+  </main>
+  
+  <script src="../../js/helperApi.js"></script>
+  <script>
+    const act_form = document.getElementById("Employee_form")?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formdata = new FormData(e.target);
+        const data = {};
+        for(let[key, values] of formdata.entries()){
+            data[key] = values.trim();
+        }
+        try{
+            const res = await secureFetch('/api/AddEmployees', {
+                method: "POST",
+                headers: {"Content-type": "application/json"},
+                body: JSON.stringify(data)
+            });
+            const res_data = await res.json();
+            if(res_data.success){
+                alert("Employee saved successfully");
+                document.getElementById("Employee_form").reset();
+            } else {
+                alert("Error: " + (res_data.error || "unknown"));
+            }
+        } catch(err) {
+            console.log(err.message + " Req Failed");
+        }
+    });
+  </script>
+</body>
+</html>

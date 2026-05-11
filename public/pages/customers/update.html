@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Customers</title>
+      <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav id="navbar"></nav>
+    <div>
+        <label>Customer ID</label>
+      <select id="drop-cust-id">
+        <option value="" disabled selected> Customer-ID</option>
+      </select>
+       <select id="drop-cust-Name">
+        <option value="" disabled selected> Customers Name</option>
+      </select>
+    </div>
+     <script src="../../js/helperApi.js"></script>
+   <script>
+    fetch("navbar.html").then(res=>res.text()).then(data=>document.getElementById("navbar").innerHTML=data);
+   </script>
+   <script src="../../js/customers.js"></script>
+</body>
+</html>
