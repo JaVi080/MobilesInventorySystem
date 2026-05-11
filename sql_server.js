@@ -44,57 +44,7 @@ app.post('/Stock_in', async (req, res) => {
 
 
 
-//Inserting data into Employees
 
-app.post('/AddEmployees', async (req, res) => {
-    try {
-        const { f_name, city, email } = req.body;
-        if (!f_name) {
-            return res.status(400).json({ error: "Employees Name is requires" });
-        }
-        // const [first_Name,...rest]=supp_full_name.split(" ");
-        // lastName=rest.join(" ");
-        // console.log(lastName);
-        await pool.query("insert into Employes (fName,city,email) values(?,?,?)",
-            [f_name, city, email]
-        );
-        res.json({ success: true, message: "Employees Added" })
-    } catch (err) {
-        console.log(err.message);
-    }
-
-})
-//View Employes
-app.get('/EMPLOYES_View', async (req, res) => {
-    try {
-        const [employees] = await pool.query('select * from  Employes');
-        console.log("hello there SUPPLIERS")
-        //  console.log(phones[0]);
-        res.json(employees);
-    } catch (err) {
-        console.log(err.message);
-    }
-})
-
-//Sales
-
-app.post('/Sales', async (req, res) => {
-    try {
-        console.log("Ok i am in Sales data");
-        const { cust_id, emp_id, Model_No, Phones_Sale, selling_price, deposit } = req.body;
-        if (!cust_id || !emp_id || !Model_No || Phones_Sale < 1) {
-            return res.status(400).json({ error: "Check ur fields correctly" })
-        }
-        console.log(Phones_Sale);
-        await pool.query("insert into sales(Customer_id,SalesPerson_id,mb_model_no,No_Phones_Sales,selling_price,Deposit) values(?,?,?,?,?,?)",
-            [cust_id, emp_id, Model_No, Phones_Sale, selling_price, deposit]);
-        await pool.query(`update Phones set Total_Stock=Total_Stock-? where Model_no=?`,
-            [Phones_Sale, Model_No]);
-        res.json({ success: true, message: "Sale successfully" });
-    } catch (e) {
-        console.log(e.message);
-    }
-})
 const supplierRoutes = require('./src/routes/supplier.routes');
 const phoneRoutes=require('./src/routes/phone.routes')
 const customerRoutes = require('./src/routes/customer.routes');
