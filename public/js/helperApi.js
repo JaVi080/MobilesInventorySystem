@@ -15,7 +15,12 @@ async function secureFetch(url, options = {}) {
     // 🧠 Pro Tip: If the token is expired (403), redirect to login automatically!
     if (response.status === 401 || response.status === 403) {
         alert("Session expired. Please login again.");
-        window.location.href = "/Auth/login.html";
+        window.location.href = "../auth/login.html";
+        return response;
+    }
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status}: ${errorText}`);
     }
     return response;
 }

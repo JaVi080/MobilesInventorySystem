@@ -76,4 +76,59 @@ router.patch('/UpdateSales', async (req, res) => {
     }
 });
 
+
+// Filter sales
+router.post('/Sales_Filter', async (req, res) => {
+    try {
+        const { sales_id, emp_id, cust_name, from_date, to_date } = req.body;
+        console.log("in sales fltering")
+        let query = `SELECT s.sales_id,
+                    s.Customer_id,
+                    CONCAT(COALESCE(c.fName, ''), ' ', COALESCE(c.lName, '')) AS customer_name,
+                    s.SalesPerson_id AS Employee_ID,
+                    s.mb_model_no,
+                    s.No_Phones_Sales,
+                    s.selling_price,
+                    s.Deposit,
+                    s.Quality,
+                    s.sales_date,
+                    (s.No_Phones_Sales * s.selling_price) AS total_price,
+                    (s.No_Phones_Sales * s.selling_price - s.Deposit) AS pending_amount
+                    FROM sales s
+                    LEFT JOIN Customer c ON c.customer_id = s.Customer_id
+                    WHERE 1=1`;
+
+        const params = [];
+
+        if (sales_id) {
+            query += ' AND s.sales_id = ?';
+            params.push(sales_id);
+        }
+        if (emp_id) {
+            query += ' AND s.SalesPerson_id = ?';
+            params.push(emp_id);
+        }
+        if (cust_name) {
+            query += ' AND (c.fName LIKE ? OR c.lName LIKE ?)';
+            params.push(`%${cust_name}%`, `%${cust_name}%`);
+        }
+        if (from_date && to_date) {
+            query += ' AND DATE(s.sales_date) BETWEEN ? AND ?';
+            params.push(from_date, to_date);
+        } else if (from_date) {
+            query += ' AND DATE(s.sales_date) >= ?';
+            params.push(from_date);
+        } else if (to_date) {
+            query += ' AND DATE(s.sales_date) <= ?';
+            params.push(to_date);
+        }
+
+        const [sales] = await pool.query(query, params);
+        return res.json(sales);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;

@@ -1,5 +1,6 @@
 // for dropdown cities
-
+import { PopulateDropDown } from "./populateDropdown.js";
+PopulateDropDown();
 
 // Inserting DATA
 const act_form = document.getElementById("Customer_form")?.addEventListener("submit", async (e) => {
@@ -13,7 +14,7 @@ const act_form = document.getElementById("Customer_form")?.addEventListener("sub
   try {
     const res = await secureFetch('http://localhost:5000/api/AddCustomers', {
       method: "POST",
-      headers: { "Content-type": "application/json" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
     const res_data = await res.json();
@@ -144,6 +145,7 @@ async function update_database_customer(customer_id, data) {
     return null;
   }
 }
+
 
 function display_data(tbody, res_data) {
   let html = "";

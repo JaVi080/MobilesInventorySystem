@@ -14,7 +14,7 @@ const act_form=document.getElementById("Sale_form")?.addEventListener("submit",a
     try{
     const res=await secureFetch('http://localhost:5000/api/Sales',{
         method:"POST",
-        headers:{"Content-type":"application/json"},
+        headers:{"Content-Type":"application/json"},
         // body:JSON.stringify({P_name,P_model,brand})
         body:JSON.stringify(data)
     });
@@ -187,3 +187,41 @@ async function viewData(param = 'all') {
 }
 
 viewData();
+
+async function filterSales() {
+    const sales_id   = document.getElementById('filter_sales_id').value.trim();
+    const emp_id     = document.getElementById('filter_emp_id').value.trim();
+    const cust_name  = document.getElementById('filter_cust_name').value.trim();
+    const from_date  = document.getElementById('filter_from_date').value;
+    const to_date    = document.getElementById('filter_to_date').value;
+console.log("abi tk tu chal raha hai");
+    const body = {};
+    if (sales_id)  body.sales_id  = sales_id;
+    if (emp_id)    body.emp_id    = emp_id;
+    if (cust_name) body.cust_name = cust_name;
+    if (from_date) body.from_date = from_date;
+    if (to_date)   body.to_date   = to_date;
+
+    try {
+        const res = await secureFetch('/api/Sales_Filter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        displayRows(data);  // your existing function that renders rows
+    } catch (err) {
+        console.log('Filter error:', err);
+    }
+}
+
+document.getElementById('search_btn')?.addEventListener('click', filterSales);
+
+document.getElementById('reset_btn')?.addEventListener('click', () => {
+    document.getElementById('filter_sales_id').value = '';
+    document.getElementById('filter_emp_id').value = '';
+    document.getElementById('filter_cust_name').value = '';
+    document.getElementById('filter_from_date').value = '';
+    document.getElementById('filter_to_date').value = '';
+    viewData('all');
+});

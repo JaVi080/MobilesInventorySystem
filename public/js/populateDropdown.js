@@ -50,23 +50,28 @@ const uniqueModelsNo=new Set();
     console.log(err)
    }
   }
-  export async function Sales_PopulateDropDown(){
+  export async function PopulateDropDown(){
 
-       const Cust_res_get=await secureFetch('http://localhost:5000/Customers_View');
+       const Cust_res_get=await secureFetch('http://localhost:5000/api/Customers_View');
         const Cust_res_data=await Cust_res_get.json();
              Cust_res_data.forEach( e=> {
          
           const option=document.createElement("option");
+          const cityOption=document.createElement("option");
           option.value=e.customer_id;
           option.textContent=e.customer_id;
+
+          cityOption.value=e.city;
+          cityOption.textContent=e.city;
           document.getElementById("dropdown_cust_ids")?.appendChild(option);
+          document.getElementById("dropdown_cust_city")?.appendChild(cityOption);
             });
              const emp_res_get=await secureFetch('http://localhost:5000/api/EMPLOYES_View');
         const emp_res_data=await emp_res_get.json();
              emp_res_data.forEach( e=> {
          
           const option2=document.createElement("option");
-          option2.value=e.employ_id;
+          option2.value=e.employe_id;
           option2.textContent=e.employe_id;
           document.getElementById("dropdown_emp_ids")?.appendChild(option2);
             });
@@ -83,8 +88,8 @@ const uniqueModelsNo=new Set();
   }
 //Customer Dropdown Populate
   export async function populateCustomersDropdown(){
-const cust_data=await  secureFetch('http://localhost:5000/api/Customers_View');
-const res_cust_data=cust_data.json();
+const cust_data=await secureFetch('http://localhost:5000/api/Customers_View');
+const res_cust_data=await cust_data.json();
 
 //Filling Customer ids  Dropdown
 res_cust_data.forEach(e=>{
