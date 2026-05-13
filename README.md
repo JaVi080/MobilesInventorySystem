@@ -59,13 +59,13 @@ Protected routes verify the token before allowing access to inventory operations
 
 ## Screenshots
 ### Login 
-![img](screenshots\login.png)
+![img](screenshots/login.png)
 ### Phone Section
-![img](C:\Users\Public\Imp_Folders\WebDevelopment_Frontend\JS_Project\MobilePhoneSystem\screenshots\phoneSec.png)
+![img](screenshots/phoneSec.png)
 ### Add Phones
-![img](screenshots\AddSection.png)
+![img](screenshots/AddSection.png)
 ### View / Update Section
-![img](screenshots\view_update.png)
+![img](screenshots/view_update.png)
 
 > All other sectiones have also these features 
 ## Quick start
