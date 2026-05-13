@@ -59,15 +59,15 @@ Protected routes verify the token before allowing access to inventory operations
 
 ## Screenshots
 ### Login 
-screenshots\login.png
+![img](screenshots\login.png)
 ### Phone Section
-C:\Users\Public\Imp_Folders\WebDevelopment_Frontend\JS_Project\MobilePhoneSystem\screenshots\phoneSec.png
+![img](C:\Users\Public\Imp_Folders\WebDevelopment_Frontend\JS_Project\MobilePhoneSystem\screenshots\phoneSec.png)
 ### Add Phones
-screenshots\AddSection.png
+![img](screenshots\AddSection.png)
 ### View / Update Section
-screenshots\view_update.png
+![img](screenshots\view_update.png)
 
-<All other sectiones have also these features >
+> All other sectiones have also these features 
 ## Quick start
 
 1. Clone the repository.
