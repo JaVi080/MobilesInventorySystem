@@ -110,9 +110,8 @@ node sql_server.js
 
 ## Future improvements
 
-- add role-based access control so admin, sales, and inventory users have different permissions
-- enable sales report generation and downloadable exports
-- improve frontend workflow for page navigation and form validation
+- add role-based access control 
+- report generation and downloadable exports
 - improved frontend UI/UX
 - enhanced backend validation
 - support a more complete dashboard with analytics and inventory alerts
