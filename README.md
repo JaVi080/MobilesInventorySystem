@@ -29,7 +29,7 @@ It shows how to keep frontend and backend responsibilities separated while suppo
 
 ## Tech stack
 
-# Backend
+### Backend
 - Node.js
 - Express.js
 - MySQL
@@ -38,7 +38,7 @@ It shows how to keep frontend and backend responsibilities separated while suppo
 - environment configuration (`dotenv`)
 - CORS support (`cors`)
 
-# Frontend
+### Frontend
 - HTML
 - CSS
 - JavaScript
@@ -103,6 +103,6 @@ node sql_server.js
 
 ## Author
 ## Javairia Lateef
-# Github : https://github.com/JaVi080
-# linkdin : https://www.linkedin.com/in/javairialateef
+### Github : https://github.com/JaVi080
+### linkdin : https://www.linkedin.com/in/javairialateef
 
