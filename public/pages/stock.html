@@ -54,32 +54,7 @@
     </div>
   </main>
   <script>
-    async function PopulateDropdown(){
-    try{
-        const res_get=await fetch('http://localhost:5000/Phones_View');
-        const res_data=await res_get.json();
-
-       
-        res_data.forEach( e=> {
-          const option=document.createElement("option");
-          option.value=e.Model_no,
-          option.textContent=e.Model_no;
-          document.getElementById("dropdown_modelNo")?.appendChild(option);
-        });
-          const supp_res_get=await fetch('http://localhost:5000/Suppliers_View');
-        const result=await supp_res_get.json();
-
-          result.forEach( e=> {
-          const option3=document.createElement("option");
-          option3.value=e.supplier_id,
-          option3.textContent=e.supplier_id;
-          document.getElementById("dropdown_supplier")?.appendChild(option3);
-        });
-   }catch(err){
-    console.log(err)
-   }
-  }
-  PopulateDropdown();
+   
   </script>
   <script>
        //Searching Specific Phone Data

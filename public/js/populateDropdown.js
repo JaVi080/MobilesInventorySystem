@@ -85,6 +85,16 @@ const uniqueModelsNo=new Set();
           option3.textContent=e.Model_no;
           document.getElementById("dropdown_modelNo")?.appendChild(option3);
             });
+//supp dropdown
+             const supp_res_get=await fetch('http://localhost:5000/Suppliers_View');
+        const result=await supp_res_get.json();
+
+          result.forEach( e=> {
+          const supOption=document.createElement("option");
+          supOption.value=e.supplier_id,
+          supOption.textContent=e.supplier_id;
+          document.getElementById("dropdown_supplier")?.appendChild(supOption);
+        });
   }
 //Customer Dropdown Populate
   export async function populateCustomersDropdown(){
