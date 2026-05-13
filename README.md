@@ -43,14 +43,22 @@ It shows how to keep frontend and backend responsibilities separated while suppo
 - CSS
 - JavaScript
 
+### Database
+- MySQL
+
 ## Authentication
 
 Most /api/* endpoints are protected using JWT middleware.
 
 After successful login, the backend generates a JWT token which must be included in requests:
+```http
 Authorization: Bearer <token>
+```
 
 Protected routes verify the token before allowing access to inventory operations.
+
+## Screenshots
+
 
 ## Quick start
 
@@ -102,7 +110,7 @@ node sql_server.js
 - support a more complete dashboard with analytics and inventory alerts
 
 ## Author
-## Javairia Lateef
-### Github : https://github.com/JaVi080
-### linkdin : https://www.linkedin.com/in/javairialateef
+### Javairia Lateef
+Github : https://github.com/JaVi080
+linkdin : https://www.linkedin.com/in/javairialateef
 
