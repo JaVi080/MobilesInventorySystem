@@ -58,8 +58,16 @@ Authorization: Bearer <token>
 Protected routes verify the token before allowing access to inventory operations.
 
 ## Screenshots
+### Login 
+![alt text](image-3.png)
+### Phone Section
+![Phone Section](image.png)
+### Add Phones
+![alt text](image-1.png)
+### View / Update Section
+![alt text](image-2.png)
 
-
+<All other sectiones have also these features >
 ## Quick start
 
 1. Clone the repository.
