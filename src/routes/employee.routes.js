@@ -12,13 +12,16 @@ router.post('/AddEmployees', async (req, res) => {
         }
         const token = crypto.randomBytes(32).toString("hex"); //generating token for the paswd linkdsetup
 
+     const expiry = new Date(Date.now() + (60 * 60 * 1000)/2); // Token expires in 30 minutes
+
         await pool.query(
             "insert into Employes (fName, lName, DOB, city, email, phone_no, Address, roles, Hiring_Date, salary) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [fName, lName, DOB, city, email, phone_no, Address, roles, Hiring_Date, salary]
         );
+//setup token for the employee to set their password
         await pool.query(
-            "insert into Employee_Password_Setup (email, token) values (?, ?)",
-            [email, token]
+            "insert into Login (email, setup_token, expiry) values (?, ?, ?)",
+            [email, token, expiry]
         );
         res.json({ success: true, message: "Employee Added" });
     } catch (err) {
