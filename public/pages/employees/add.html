@@ -54,9 +54,8 @@
         <div class="form-group">
           <label for="position">Position:</label>
           <select id="position" name="position" required style="padding: 12px 15px; border: 2px solid #e1e8ed; border-radius: 8px; font-size: 16px;">
-            <option value="Technician">Technician</option>
             <option value="Manager">Manager</option>
-            <option value="Salesperson">Salesperson</option>
+            <option value="Staff">Salesperson</option>
             <option value="Admin">Admin</option>
           </select>
         </div>
@@ -75,32 +74,7 @@
   
   <script src="../../js/helperApi.js"></script>
   <script>
-    // name att. in form— used by FormData to collect values as key-value pairs
-    const act_form = document.getElementById("Employee_form")?.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const formdata = new FormData(e.target);
-        const data = {};
-        for(let[key, values] of formdata.entries()){
-          console.log(key +" : "+values);
-            data[key] = values.trim();
-        }
-        try{
-            const res = await secureFetch('http://localhost:5000/api/AddEmployees', {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(data)
-            });
-            const res_data = await res.json();
-            if(res_data.success){
-                alert("Employee saved successfully");
-                document.getElementById("Employee_form").reset();
-            } else {
-                alert("Error: " + (res_data.error || "unknown"));
-            }
-        } catch(err) {
-            console.log(err.message + " Req Failed");
-        }
-    });
+   
   </script>
 </body>
 </html>

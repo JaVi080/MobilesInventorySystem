@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock</title>
+   <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+ <header class="top-bar">
+            <span class="brand">📦 Inventory MS</span>
+            <span class="page-title">Stock Purchase Entry</span>
+        </header>
+
+   <nav class="sidebar">
+    <h2 style="text-align:center; margin-bottom:20px;">Menu</h2>
+    <a href="../../index.html">Dashboard</a>
+    <a href="../phones/Phones.html">Phones</a>
+    <a href="../suppliers/Supplier.html">Suppliers</a>
+    <a href="../customers/Customer.html">Customers</a>
+    <a href="../employees/employe.html">Employees</a>
+    <a href="../sales/sales.html">Sale</a>
+    <a href="stock.html">Stock In</a>
+  </nav>
+
+   <main class="form-card">
+ 
+            <h2 class="form-heading">New Stock Purchase</h2>
+            <p class="form-sub">Fill in the details below to record incoming stock.</p>
+ 
+            <form id="stock_form">
+                 <div class="form-grid">
+                <!-- Supplier Dropdown -->
+                <div class="form-group">
+                    <label for="supplier_id">Supplier</label>
+                    <select id="dropdown_supplier" name="supplier_id" required>
+                        <option value="">-- Select Supplier --</option>
+                        <!-- populated by JS -->
+                    </select>
+                </div>
+ 
+                <!-- Employee Dropdown -->
+                <div class="field-group">
+                    <label for="emp_id">Employee (Handled By)</label>
+                    <select id="dropdown_emp_ids" name="emp_id" required>
+                        <option value="">-- Select Employee --</option>
+                        <!-- populated by JS -->
+                    </select>
+                </div>
+ 
+                <!-- Phone Model Dropdown -->
+                <div class="field-group">
+                    <label for="model_no">Phone Model</label>
+                    <select id="dropdown_modelNo" name="model_no" required>
+                        <option value="">-- Select Model --</option>
+                        <!-- populated by JS -->
+                    </select>
+                </div>
+ 
+                <!-- Quantity -->
+                <div class="field-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="Stock_in_Quantity" min="1" placeholder="e.g. 10" required>
+                </div>
+ 
+                <!-- Purchase Price -->
+                <div class="field-group">
+                    <label for="price">Purchase Price (per unit)</label>
+                    <input type="number" id="price" name="price_mb" min="0" step="0.01" placeholder="e.g. 45000.00" required>
+                </div>
+ 
+                <!-- Second Hand toggle -->
+                <div class="field-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="scnd_hand" name="scnd_hand">
+                        Second-hand stock?
+                    </label>
+                </div>
+ 
+                <button type="submit" class="submit-btn" id="submit_btn">Add Stock</button>
+ 
+                <!-- feedback message -->
+                <p id="form_msg" class="form-msg"></p>
+            </div>
+            </form>
+ 
+        </main>
+ 
+    <script src="../../js/helperApi.js"></script>
+  <script type="module" src="../../js/stock.js"></script>
+</body>
+</html>

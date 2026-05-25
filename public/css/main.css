@@ -77,7 +77,7 @@ section.active {
 
 /* ===== Form Styling for Add Phones and Add Supplier ===== */
 #phone_form,#Sale_form,#Customer_form
-#Supplier_form {
+#Supplier_form,#stock_form {
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); /* Light gradient background */
   padding: 40px;
   border-radius: 15px;

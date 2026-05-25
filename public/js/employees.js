@@ -1,6 +1,12 @@
 // Employees JS Code
+const crypto = require("crypto");
+
+
+
 let selected_row = null;
 let editMode = false;
+
+
 
 const employeesTableBody = document.getElementById("employeesTableBody");
 const edit_btn = document.getElementById("edit-emp-btn");
@@ -8,6 +14,33 @@ const save_btn = document.getElementById("save-emp-info");
 const view_btn = document.getElementById("view_btn");
 const search_btn = document.getElementById("search_btn");
 const reset_btn = document.getElementById("reset_btn");
+
+ // name att. in form— used by FormData to collect values as key-value pairs
+    const act_form = document.getElementById("Employee_form")?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formdata = new FormData(e.target);
+        const data = {};
+        for(let[key, values] of formdata.entries()){
+          console.log(key +" : "+values);
+            data[key] = values.trim();
+        }
+        try{
+            const res = await secureFetch('http://localhost:5000/api/AddEmployees', {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            });
+            const res_data = await res.json();
+            if(res_data.success){
+                alert("Employee saved successfully");
+                document.getElementById("Employee_form").reset();
+            } else {
+                alert("Error: " + (res_data.error || "unknown"));
+            }
+        } catch(err) {
+            console.log(err.message + " Req Failed");
+        }
+    });
 
 async function loadData(url = '/api/EMPLOYES_View', options = {}) {
   try {

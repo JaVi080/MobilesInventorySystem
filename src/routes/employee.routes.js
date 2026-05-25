@@ -1,17 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const pool = require("../config/db.js");
+const crypto = require('crypto');
 
 // Inserting data into Employees
 router.post('/AddEmployees', async (req, res) => {
     try {
-        const { fName, lName, DOB, city, email, phone_no, Address, position, Hiring_Date, salary } = req.body;
+        const { fName, lName, DOB, city, email, phone_no, Address, roles, Hiring_Date, salary } = req.body;
         if (!fName || !email) {
             return res.status(400).json({ error: "Employee First Name and Email are required" });
         }
+        const token = crypto.randomBytes(32).toString("hex"); //generating token for the paswd linkdsetup
+
         await pool.query(
-            "insert into Employes (fName, lName, DOB, city, email, phone_no, Address, position, Hiring_Date, salary) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            [fName, lName, DOB, city, email, phone_no, Address, position, Hiring_Date, salary]
+            "insert into Employes (fName, lName, DOB, city, email, phone_no, Address, roles, Hiring_Date, salary) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [fName, lName, DOB, city, email, phone_no, Address, roles, Hiring_Date, salary]
+        );
+        await pool.query(
+            "insert into Employee_Password_Setup (email, token) values (?, ?)",
+            [email, token]
         );
         res.json({ success: true, message: "Employee Added" });
     } catch (err) {

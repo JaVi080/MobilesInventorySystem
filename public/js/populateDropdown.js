@@ -86,7 +86,7 @@ const uniqueModelsNo=new Set();
           document.getElementById("dropdown_modelNo")?.appendChild(option3);
             });
 //supp dropdown
-             const supp_res_get=await fetch('http://localhost:5000/Suppliers_View');
+             const supp_res_get=await secureFetch('http://localhost:5000/api/Suppliers_View');
         const result=await supp_res_get.json();
 
           result.forEach( e=> {
