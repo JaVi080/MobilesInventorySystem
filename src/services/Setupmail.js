@@ -1,4 +1,4 @@
-const nodemailer=require9('nodemailer');
+const nodemailer=require('nodemailer');
 
 const setUpMail=async (email, token, text)=>{
     try{
