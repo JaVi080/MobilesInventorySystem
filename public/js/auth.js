@@ -10,7 +10,7 @@ async function submitPassword() {
     }
 
     try {
-        const response = await fetch('api/SetPassword', {
+        const response = await fetch('/api/SetPassword', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -21,7 +21,7 @@ async function submitPassword() {
         const result = await response.json();
         if (result.success) {
             alert("Password set successfully.");
-            window.location.href = "/login";
+            window.location.href = "login.html";
         } else {
             alert("Failed to set password.");
         }

@@ -10,7 +10,7 @@ const setUpMail=async (email, token, text)=>{
             }
         });
 
-       const setupLink = `http://localhost:3000/setup-password.html?token=${token}`;
+       const setupLink = `http://localhost:5000/pages/auth/setup-password.html?token=${token}`;
 
         const mailOptions={
             from:process.env.EMAIL_USER,

@@ -1,7 +1,4 @@
 // Employees JS Code
-const crypto = require("crypto");
-
-
 
 let selected_row = null;
 let editMode = false;
