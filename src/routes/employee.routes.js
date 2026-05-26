@@ -27,6 +27,7 @@ router.post('/AddEmployees', async (req, res) => {
         res.json({ success: true, message: "Employee Added" });
 
         setupmail(email, token); // Send setup email with the token
+        
     } catch (err) {
         console.log(err.message);
         res.status(500).json({ error: err.message });

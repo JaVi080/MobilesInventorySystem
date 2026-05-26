@@ -17,16 +17,8 @@ const corsOptions = {
 app.use(cors());
 
 
-
 app.use(express.json()); // to parse incoming data
 app.use(express.static(path.join(__dirname, 'public')));//serves frontend files
-
-
-
-
-
-
-
 
 
 const supplierRoutes = require('./src/routes/supplier.routes');

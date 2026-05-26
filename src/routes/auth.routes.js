@@ -18,6 +18,7 @@ router.post('/SetPassword', async (req, res) => {
         const user = rows[0];
         const salt = await bcrypt.genSalt(10); //generate random no so that everytime hash is diff
         const password_hash = await bcrypt.hash(password, salt);
+        
         await pool.query("UPDATE Login SET pswd_hash = ?, setup_token = NULL, expiry = NULL WHERE id = ?", [password_hash, user.id]);
         res.json({ success: true, message: "Password set successfully! You can now login." });
     } catch (err) {
