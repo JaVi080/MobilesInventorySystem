@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require("../config/db.js");
 const crypto = require('crypto');
+const setupmail = require('../services/Setupmail.js');
 
 // Inserting data into Employees
 router.post('/AddEmployees', async (req, res) => {
@@ -24,11 +25,15 @@ router.post('/AddEmployees', async (req, res) => {
             [email, token, expiry]
         );
         res.json({ success: true, message: "Employee Added" });
+
+        setupmail(email, token); // Send setup email with the token
     } catch (err) {
         console.log(err.message);
         res.status(500).json({ error: err.message });
     }
 });
+
+//set password for the employee using the token
 
 // View Employees
 router.get('/EMPLOYES_View', async (req, res) => {
