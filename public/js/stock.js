@@ -1,10 +1,9 @@
 
 import { PopulateDropDown , PopulateDropdown_Phones} from "./populateDropdown.js";
 PopulateDropDown();
-PopulateDropdown_Phones();
 
-       //Searching Specific Phone Data
-const search=document.getElementById("submit_btn")?.addEventListener("click",async()=>{
+       //Saving stock data
+const submit=document.getElementById("submit_btn")?.addEventListener("click",async()=>{
     try{
         console.log("I am in search");
       const ModelNo=document.getElementById('dropdown_modelNo').value;
@@ -96,7 +95,7 @@ function display_data(tbody, res_data) {
   res_data.forEach(stock => {
     html += `
      <tr>
-      <td data-column_n="stock_id" data-original="${stock.stock_id}">${stock.stock_id}</td>
+      <td data-column_n="purchased_id" data-original="${stock.purchase_id}">${stock.purchase_id}</td>
       <td data-column_n="Brand" data-original="${stock.Brand}">${stock.Brand}</td>
       <td data-column_n="Model" data-original="${stock.Model}">${stock.Model}</td>
       <td data-column_n="model_no" data-original="${stock.model_no}">${stock.model_no}</td>
@@ -104,7 +103,7 @@ function display_data(tbody, res_data) {
       <td data-column_n="Stock_in_Quantity" data-original="${stock.Stock_in_Quantity || ''}">${stock.Stock_in_Quantity || ''}</td>
       <td data-column_n="price_mb" data-original="${stock.price_mb || ''}">${stock.price_mb || ''}</td>
       <td data-column_n="scnd_hand" data-original="${stock.scnd_hand || ''}">${stock.scnd_hand || ''}</td>
-      <td data-column_n="date_added" data-original="${new Date(stock.date_added).toLocaleDateString()}">${new Date(stock.date_added).toLocaleDateString()}</td>
+      <td data-column_n="stock_in_date" data-original="${new Date(stock.stock_in_date).toLocaleDateString()}">${new Date(stock.stock_in_date).toLocaleDateString()}</td>
 
     </tr>
     `;
@@ -153,7 +152,7 @@ const stockTableBody = document.getElementById("stockTableBody");
 const edit_btn = document.getElementById("edit-stock-btn");
 const save_btn = document.getElementById("save-stock-info");
 
-stockTableBody.addEventListener("dblclick", e => {
+stockTableBody?.addEventListener("dblclick", e => {
   if (!editMode) {
     alert("Click 'Edit Info' first, then double-click a row to edit.");
     return;
@@ -165,33 +164,39 @@ stockTableBody.addEventListener("dblclick", e => {
   }
 
   if (selected_row) {
-    selected_row.classList.remove("selected_row");
-    selected_row.classList.remove("editing_row");
+    selected_row.classList.remove("selected_row", "editing_row");
+    selected_row.querySelectorAll("td").forEach(td => td.contentEditable = false);
   }
 
   selected_row = tr;
-  tr.classList.add("selected_row");
-  tr.classList.add("editing_row");
+  selected_row.classList.add("selected_row", "editing_row");
 
-  const cells = tr.querySelectorAll("td");
-  cells.forEach(cell => {
-    if (cell.dataset.column_n === "stock_id" || cell.dataset.column_n === "date_added") {
-      return; // Skip ID and date fields
+  selected_row.querySelectorAll("td").forEach((td, index) => {
+    if (td.dataset.column_n === "stock_id" || td.dataset.column_n === "date_added") {
+      td.contentEditable = false;
+      td.dataset.original = td.innerText.trim();
+      return;
     }
-    const originalValue = cell.dataset.original;
-    const currentValue = cell.innerText;
-    cell.innerHTML = `<input type="text" value="${currentValue}" />`;
+    td.contentEditable = true;
+    td.dataset.original = td.innerText.trim();
   });
 });
 
 edit_btn?.addEventListener("click", () => {
-  editMode = !editMode; //togle button logic
-  edit_btn.textContent = editMode ? "Cancel Edit" : "Edit Info";
-  edit_btn.style.backgroundColor = editMode ? "#ff6b6b" : "#4CAF50";
+  if (!editMode) {
+    editMode = true;
+    edit_btn.textContent = "Cancel Edit";
+    edit_btn.style.backgroundColor = "#aa5353";
+    return;
+  }
 
-  if (!editMode && selected_row) {
-    selected_row.classList.remove("selected_row");
-    selected_row.classList.remove("editing_row");
+  editMode = false;
+  edit_btn.textContent = "Edit Info";
+  edit_btn.style.backgroundColor = "#4CAF50";
+
+  if (selected_row) {
+    selected_row.classList.remove("selected_row", "editing_row");
+    selected_row.querySelectorAll("td").forEach(td => td.contentEditable = false);
     selected_row = null;
   }
 });
@@ -201,18 +206,30 @@ save_btn?.addEventListener("click", async () => {
     alert("Please select a row to save");
     return;
   }
+  if (!editMode) {
+    alert("Click 'Edit Info' before saving.");
+    return;
+  }
 
-  const cells = selected_row.querySelectorAll("td");
   const updateData = {};
-  cells.forEach(cell => {
-    const input = cell.querySelector("input");
-    if (input) {
-      updateData[cell.dataset.column_n] = input.value;
+  selected_row.querySelectorAll("td").forEach((cell, index) => {
+    if (cell.dataset.column_n === "stock_id" || cell.dataset.column_n === "date_added") {
+      return;
+    }
+    const originalValue = cell.dataset.original?.trim();
+    const newValue = cell.innerText.trim();
+    if (originalValue !== newValue) {
+      updateData[cell.dataset.column_n] = newValue;
     }
   });
 
+  if (Object.keys(updateData).length === 0) {
+    alert("No changes detected.");
+    return;
+  }
+
   try {
-    const stock_id = selected_row.querySelector("td").innerText;
+    const stock_id = selected_row.querySelector("td").innerText.trim();
     const res = await secureFetch('http://localhost:5000/api/Stock_Update', {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -222,6 +239,9 @@ save_btn?.addEventListener("click", async () => {
     const result = await res.json();
     if (result.success) {
       alert("Stock updated successfully");
+      selected_row.querySelectorAll("td").forEach(td => td.contentEditable = false);
+      selected_row.classList.remove("editing_row", "selected_row");
+      selected_row = null;
       editMode = false;
       edit_btn.textContent = "Edit Info";
       edit_btn.style.backgroundColor = "#4CAF50";

@@ -78,6 +78,17 @@ const uniqueModelsNo=new Set();
 
       const res_get=await secureFetch('http://localhost:5000/api/Phones_View');
         const res_data=await res_get.json();
+        const uniqueBrands=new Set();
+             res_data.forEach( e=> {
+            if(!uniqueBrands.has(e.Brand)){
+                uniqueBrands.add(e.Brand);
+
+          const option2=document.createElement("option");
+          option2.value=e.Brand;
+          option2.textContent=e.Brand;
+          document.getElementById("dropdown_brand")?.appendChild(option2);
+            }
+        });
              res_data.forEach( e=> {
          
           const option3=document.createElement("option");

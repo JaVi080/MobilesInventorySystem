@@ -6,24 +6,25 @@ const pool = require('../config/db.js');
 //View Stock in Data 
 router.get('/Stock_View', async (req, res) => {
     try {
+        console.log("Stock_View API called");
         const { param } = req.query;
         let query = `SELECT 
-                    s.stock_id,
+                    s.purchase_id,
                     s.model_no,
                     s.supplier_id,
                     s.Stock_in_Quantity,
                     s.price_mb,
                     s.scnd_hand,
-                    s.date_added,
+                    s.stock_in_date,
                     p.Brand,
                     p.Model,
                     p.Total_Stock,
                     p.scnd_hand_mb,
-                    sup.supplier_name
+                    CONCAT(sup.contact_person_fName, ' ', sup.contact_person_lName) AS supplier_name
                 FROM Stock_in_Purchase s
                 JOIN Phones p ON s.model_no = p.Model_no
-                JOIN Supplier sup ON s.supplier_id = sup.supplier_id
-                ORDER BY s.date_added DESC`;
+                JOIN Suppliers sup ON s.supplier_id = sup.supplier_id
+                ORDER BY s.stock_in_date DESC`;
         
         if (param === 'limit') {
             query += ' LIMIT 10';
@@ -65,27 +66,27 @@ router.post('/Stock_Filter', async (req, res) => {
     try {
         const { stockId, brand, model, supplier } = req.body;
         let query = `SELECT 
-                    s.stock_id,
+                    s.purchase_id,
                     s.model_no,
                     s.supplier_id,
                     s.Stock_in_Quantity,
                     s.price_mb,
                     s.scnd_hand,
-                    s.date_added,
+                    s.stock_in_date,
                     p.Brand,
                     p.Model,
                     p.Total_Stock,
                     p.scnd_hand_mb,
-                    sup.supplier_name
+                    CONCAT(sup.contact_person_fName, ' ', sup.contact_person_lName) AS supplier_name
                 FROM Stock_in_Purchase s
                 JOIN Phones p ON s.model_no = p.Model_no
-                JOIN Supplier sup ON s.supplier_id = sup.supplier_id
+                JOIN Suppliers sup ON s.supplier_id = sup.supplier_id
                 WHERE 1=1`;
 
         const params = [];
 
         if (stockId) {
-            query += ` AND s.stock_id = ?`;
+            query += ` AND s.purchase_id = ?`;
             params.push(stockId);
         }
         if (brand) {
@@ -101,7 +102,7 @@ router.post('/Stock_Filter', async (req, res) => {
             params.push(supplier);
         }
 
-        query += ` ORDER BY s.date_added DESC`;
+        query += ` ORDER BY s.stock_in_date DESC`;
 
         const [results] = await pool.query(query, params);
         res.json(results);

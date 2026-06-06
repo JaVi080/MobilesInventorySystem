@@ -218,7 +218,7 @@
 /* Editing Mode */
 #phonesTable tbody tr.editing_row {
   background: linear-gradient(90deg, #fff3cd 0%, #fffbeb 100%) !important;
-  border: 2px solid #ffc107;
+  border: 2px solid #85c48c;
   outline: 3px solid #ff9800;
   box-shadow: 0 0 20px rgba(255, 152, 0, 0.4), inset 0 0 12px rgba(255, 193, 7, 0.2), inset 0 1px 0 rgba(255,255,255,0.5);
   animation: edit-pulse 1.8s ease-in-out infinite;
