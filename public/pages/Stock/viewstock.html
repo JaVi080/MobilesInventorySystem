@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Stock Data</title>
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/phones.css">
+</head>
+
+<body>
+  <header>
+    <h1>Mobile Phones Inventory System</h1>
+  </header>
+
+  <nav class="sidebar">
+    <h2 style="text-align:center; margin-bottom:20px;">Menu</h2>
+    
+    <a href="../../index.html">Dashboard</a>
+    <a href="../phones/Phones.html">Phones</a>
+    <a href="../suppliers/Supplier.html">Suppliers</a>
+    <a href="../customers/Customer.html">Customers</a>
+    <a href="../employees/employe.html">Employees</a>
+    <a href="../sales/sales.html">Sale</a>
+    <a href="stock.html">Stock In</a>
+  </nav>
+
+  <main>
+    <div id="viewStock" style="padding:20px;">
+      <div>
+        <h2>View / Update Stock Data</h2>
+        <div class="button-row">
+          <button id="view_btn">View Stock</button>
+          <div class="right-buttons">
+            <button id="edit-stock-btn">Edit Info</button>
+            <button id="save-stock-info">Save Info</button>
+          </div>
+        </div>
+      </div>
+      <div id="drop">
+        <input id="stock_id" type="text" placeholder="Search by Stock ID" />
+
+        <select id="dropdown_brand">
+          <option value="" disabled selected>Brand Selection</option>
+        </select>
+
+        <select id="dropdown_modelNo">
+          <option value="" disabled selected>Model Selection</option>
+        </select>
+
+        <select id="dropdown_supplier">
+          <option value="" disabled selected>Supplier Selection</option>
+        </select>
+        <button id="search_btn">Search</button>
+        <button id="reset_btn">Reset</button>
+      </div>
+
+      <div id="stockTableContainer">
+        <table id="stockTable">
+          <thead>
+            <tr>
+              <th>Stock ID</th>
+              <th>Brand</th>
+              <th>Model</th>
+              <th>Model No</th>
+              <th>Supplier</th>
+              <th>Quantity</th>
+              <th>Price (per unit)</th>
+              <th>2nd Hand Qty</th>
+              <th>Date Added</th>
+            </tr>
+          </thead>
+          <tbody id="stockTableBody">
+            <!-- Rows will be added dynamically here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/helperApi.js"></script>
+  <script type="module" src="../../js/stock.js"></script>
+</body>
+
+</html>
