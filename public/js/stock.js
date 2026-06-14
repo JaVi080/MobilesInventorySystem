@@ -60,17 +60,17 @@ viewData();
 // Searching Specific Stock Data
 const search = document.getElementById("search_btn")?.addEventListener("click", async () => {
   try {
-    const brand = document.getElementById('dropdown_brand').value;
-    const model = document.getElementById('dropdown_model').value;
-    const supplier = document.getElementById('dropdown_supplier').value;
-    const stock_id = document.getElementById('stock_id').value;
+    const brand = document.getElementById('dropdown_brand')?.value || "";
+    const modelNo = document.getElementById('dropdown_modelNo')?.value || "";
+    const supplier = document.getElementById('dropdown_supplier')?.value || "";
+    const stock_id = document.getElementById('stock_id')?.value || "";
     
-    console.log({ brand, model, supplier, stock_id });
+    console.log({ brand, modelNo, supplier, stock_id });
 
     const res = await secureFetch('http://localhost:5000/api/Stock_Filter', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ stockId: stock_id, brand, model, supplier })
+      body: JSON.stringify({ stockId: stock_id, brand, modelNo, supplier })
     });
     
     const res_data = await res.json();
@@ -99,6 +99,7 @@ function display_data(tbody, res_data) {
       <td data-column_n="Brand" data-original="${stock.Brand}">${stock.Brand}</td>
       <td data-column_n="Model" data-original="${stock.Model}">${stock.Model}</td>
       <td data-column_n="model_no" data-original="${stock.model_no}">${stock.model_no}</td>
+       <td data-column_n="supplier_id" data-original="${stock.supplier_id || ''}">${stock.supplier_id|| ''}</td>
       <td data-column_n="supplier_name" data-original="${stock.supplier_name || ''}">${stock.supplier_name || ''}</td>
       <td data-column_n="Stock_in_Quantity" data-original="${stock.Stock_in_Quantity || ''}">${stock.Stock_in_Quantity || ''}</td>
       <td data-column_n="price_mb" data-original="${stock.price_mb || ''}">${stock.price_mb || ''}</td>
@@ -136,10 +137,14 @@ const view_button = document.getElementById("view_btn")?.addEventListener("click
 
 // Reset button
 document.getElementById("reset_btn")?.addEventListener("click", () => {
-  document.getElementById('dropdown_brand').value = "";
-  document.getElementById('dropdown_model').value = "";
-  document.getElementById('dropdown_supplier').value = "";
-  document.getElementById('stock_id').value = "";
+  const stockId = document.getElementById('purchased_id');
+  const brand= document.getElementById('dropdown_brand');
+  const modelNo = document.getElementById('dropdown_modelNo');
+  const supplier = document.getElementById('dropdown_supplier');
+  if (stockId) stockId.value = "";
+  if (brand) brand.value = "";
+  if (modelNo) modelNo.value = "";
+  if (supplier) supplier.value = "";
   viewData(); // Refresh the table to show all data
 });
 
@@ -172,7 +177,7 @@ stockTableBody?.addEventListener("dblclick", e => {
   selected_row.classList.add("selected_row", "editing_row");
 
   selected_row.querySelectorAll("td").forEach((td, index) => {
-    if (td.dataset.column_n === "stock_id" || td.dataset.column_n === "date_added") {
+    if (td.dataset.column_n === "purchased_id" || td.dataset.column_n === "stock_in_date" || td.dataset.column_n === "supplier_name") {
       td.contentEditable = false;
       td.dataset.original = td.innerText.trim();
       return;
@@ -211,9 +216,12 @@ save_btn?.addEventListener("click", async () => {
     return;
   }
 
+//   cell = the actual <td> element (the box itself)
+// index = position number — 0, 1, 2... (just which cell it is in order)
+// cell.dataset.column_n = the column name stored inside that cell
   const updateData = {};
-  selected_row.querySelectorAll("td").forEach((cell, index) => {
-    if (cell.dataset.column_n === "stock_id" || cell.dataset.column_n === "date_added") {
+  selected_row.querySelectorAll("td").forEach((cell) => {
+    if (cell.dataset.column_n === "purchased_id" || cell.dataset.column_n === "stock_in_date" || cell.dataset.column_n === "supplier_name") {
       return;
     }
     const originalValue = cell.dataset.original?.trim();

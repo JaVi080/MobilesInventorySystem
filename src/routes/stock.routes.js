@@ -64,7 +64,7 @@ router.post('/Stock_in', async (req, res) => {
 // Filter Stock Data
 router.post('/Stock_Filter', async (req, res) => {
     try {
-        const { stockId, brand, model, supplier } = req.body;
+        const { stockId, brand, model, modelNo, supplier } = req.body;
         let query = `SELECT 
                     s.purchase_id,
                     s.model_no,
@@ -93,12 +93,15 @@ router.post('/Stock_Filter', async (req, res) => {
             query += ` AND p.Brand = ?`;
             params.push(brand);
         }
-        if (model) {
+        if (modelNo) {
+            query += ` AND s.model_no = ?`;
+            params.push(modelNo);
+        } else if (model) {
             query += ` AND p.Model = ?`;
             params.push(model);
         }
         if (supplier) {
-            query += ` AND sup.supplier_name = ?`;
+            query += ` AND s.supplier_id = ?`;
             params.push(supplier);
         }
 
@@ -113,40 +116,29 @@ router.post('/Stock_Filter', async (req, res) => {
 });
 
 // Update Stock Data
-router.put('/Stock_Update', async (req, res) => {
+const ALLOWED_COLUMNS = ['Brand', 'Model', 'Model_no','Stock_in_Quantity','price_mb','scnd_hand','supplier_id'];
+router.patch('/Stock_Update', async (req, res) => {
     try {
-        const { stock_id, Stock_in_Quantity, price_mb, scnd_hand } = req.body;
+        const { stock_id,updateData} = req.body;
 
         if (!stock_id) {
             return res.status(400).json({ error: "Stock ID is required" });
         }
 
         let updateQuery = `UPDATE Stock_in_Purchase SET `;
-        const updateParams = [];
-        const updateFields = [];
+        
+        const safeFields = Object.keys(updateData)
+        .filter(field => ALLOWED_COLUMNS.includes(field));
+  const values = safeFields.map(field => updateData[field]);
+  // let sql_query=fields.map(f=>`${f}=?`).join(",");
+  let sql_query = safeFields.map(f => `${f}=?`).join(",");
+  for(var v of values){
+    console.log(v);
+  }
+  values.push(phone_id);
+ await pool.query(`Update Phones set ${sql_query} where phone_id=?`,values);
 
-        if (Stock_in_Quantity !== undefined) {
-            updateFields.push(`Stock_in_Quantity = ?`);
-            updateParams.push(Number(Stock_in_Quantity));
-        }
-        if (price_mb !== undefined) {
-            updateFields.push(`price_mb = ?`);
-            updateParams.push(Number(price_mb));
-        }
-        if (scnd_hand !== undefined) {
-            updateFields.push(`scnd_hand = ?`);
-            updateParams.push(Number(scnd_hand));
-        }
-
-        if (updateFields.length === 0) {
-            return res.status(400).json({ error: "No fields to update" });
-        }
-
-        updateQuery += updateFields.join(", ") + ` WHERE stock_id = ?`;
-        updateParams.push(stock_id);
-
-        await pool.query(updateQuery, updateParams);
-        res.json({ success: true, message: "Stock updated successfully" });
+      res.json({ success: true, message: "Phone Info Updated" });
     } catch (e) {
         console.log(e.message);
         res.status(500).json({ error: e.message });
