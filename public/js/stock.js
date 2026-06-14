@@ -99,7 +99,7 @@ function display_data(tbody, res_data) {
       <td data-column_n="Brand" data-original="${stock.Brand}">${stock.Brand}</td>
       <td data-column_n="Model" data-original="${stock.Model}">${stock.Model}</td>
       <td data-column_n="model_no" data-original="${stock.model_no}">${stock.model_no}</td>
-       <td data-column_n="supplier_id" data-original="${stock.supplier_id || ''}">${stock.supplier_id|| ''}</td>
+      <td data-column_n="supplier_id" data-original="${stock.supplier_id || ''}">${stock.supplier_id || ''}</td>
       <td data-column_n="supplier_name" data-original="${stock.supplier_name || ''}">${stock.supplier_name || ''}</td>
       <td data-column_n="Stock_in_Quantity" data-original="${stock.Stock_in_Quantity || ''}">${stock.Stock_in_Quantity || ''}</td>
       <td data-column_n="price_mb" data-original="${stock.price_mb || ''}">${stock.price_mb || ''}</td>
@@ -239,7 +239,7 @@ save_btn?.addEventListener("click", async () => {
   try {
     const stock_id = selected_row.querySelector("td").innerText.trim();
     const res = await secureFetch('http://localhost:5000/api/Stock_Update', {
-      method: "PUT",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ stock_id, ...updateData })
     });
@@ -253,7 +253,9 @@ save_btn?.addEventListener("click", async () => {
       editMode = false;
       edit_btn.textContent = "Edit Info";
       edit_btn.style.backgroundColor = "#4CAF50";
-      viewData(); // Refresh the table
+      viewData();
+    } else {
+      alert("Error: " + (result.error || "Update failed"));
     }
   } catch (e) {
     console.log(e.message);

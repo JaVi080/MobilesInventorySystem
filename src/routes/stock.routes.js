@@ -116,29 +116,63 @@ router.post('/Stock_Filter', async (req, res) => {
 });
 
 // Update Stock Data
-const ALLOWED_COLUMNS = ['Brand', 'Model', 'Model_no','Stock_in_Quantity','price_mb','scnd_hand','supplier_id'];
+const STOCK_COLUMNS = ['model_no', 'supplier_id', 'Stock_in_Quantity', 'price_mb', 'scnd_hand'];
+const PHONE_COLUMNS = ['Brand', 'Model'];
+
 router.patch('/Stock_Update', async (req, res) => {
     try {
         const { stock_id,updateData} = req.body;
 
         if (!stock_id) {
-            return res.status(400).json({ error: "Stock ID is required" });
+            return res.status(400).json({ error: "Purchase ID is required" });
+        }
+        if (!updateData || Object.keys(updateData).length === 0) {
+            return res.status(400).json({ error: "No fields to update" });
         }
 
-        let updateQuery = `UPDATE Stock_in_Purchase SET `;
-        
-        const safeFields = Object.keys(updateData)
-        .filter(field => ALLOWED_COLUMNS.includes(field));
-  const values = safeFields.map(field => updateData[field]);
-  // let sql_query=fields.map(f=>`${f}=?`).join(",");
-  let sql_query = safeFields.map(f => `${f}=?`).join(",");
-  for(var v of values){
-    console.log(v);
-  }
-  values.push(phone_id);
- await pool.query(`Update Phones set ${sql_query} where phone_id=?`,values);
+        const [rows] = await pool.query(
+            'SELECT model_no FROM Stock_in_Purchase WHERE purchase_id = ?',
+            [purchase_id]
+        );
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Stock record not found" });
+        }
 
-      res.json({ success: true, message: "Phone Info Updated" });
+        const currentModelNo = rows[0].model_no;
+        const stockFields = Object.keys(update_data).filter(field => STOCK_COLUMNS.includes(field));
+        const phoneFields = Object.keys(update_data).filter(field => PHONE_COLUMNS.includes(field));
+
+        if (stockFields.length === 0 && phoneFields.length === 0) {
+            return res.status(400).json({ error: "No valid fields to update" });
+        }
+
+        if (stockFields.length > 0) {
+            const stockValues = stockFields.map(field => {
+                const value = update_data[field];
+                if (['supplier_id', 'Stock_in_Quantity', 'scnd_hand', 'price_mb'].includes(field)) {
+                    return Number(value);
+                }
+                return value;
+            });
+            const stockSql = stockFields.map(field => `${field}=?`).join(', ');
+            stockValues.push(purchase_id);
+            await pool.query(
+                `UPDATE Stock_in_Purchase SET ${stockSql} WHERE purchase_id = ?`,
+                stockValues
+            );
+        }
+
+        if (phoneFields.length > 0) {
+            const phoneValues = phoneFields.map(field => updateData[field]);
+            const phoneSql = phoneFields.map(field => `${field}=?`).join(', ');
+            phoneValues.push(currentModelNo);
+            await pool.query(
+                `UPDATE Phones SET ${phoneSql} WHERE Model_no = ?`,
+                phoneValues
+            );
+        }
+
+        res.json({ success: true, message: "Stock updated successfully" });
     } catch (e) {
         console.log(e.message);
         res.status(500).json({ error: e.message });
