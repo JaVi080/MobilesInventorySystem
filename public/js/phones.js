@@ -170,6 +170,8 @@ edit_btn.addEventListener("click", () => {
   alert("Edit mode enabled. Double-click a row to select it for editing.");
 });
 
+//save button
+
 save_btn.addEventListener("click", async () => {
   if (!selected_row) {
     alert("Double-click a row first to select it.");

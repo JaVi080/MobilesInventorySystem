@@ -217,11 +217,12 @@
 
 /* Editing Mode */
 #phonesTable tbody tr.editing_row {
-  background: linear-gradient(90deg, #fff3cd 0%, #fffbeb 100%) !important;
-  border: 2px solid #85c48c;
-  outline: 3px solid #ff9800;
-  box-shadow: 0 0 20px rgba(255, 152, 0, 0.4), inset 0 0 12px rgba(255, 193, 7, 0.2), inset 0 1px 0 rgba(255,255,255,0.5);
-  animation: edit-pulse 1.8s ease-in-out infinite;
+  background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+  /* border: 2px solid #85c48c;
+  outline: 3px solid #157b1f; */
+  /* box-shadow: 0 0 20px rgba(255, 152, 0, 0.4), inset 0 0 12px rgba(255, 193, 7, 0.2), inset 0 1px 0 rgba(255,255,255,0.5);
+  animation: edit-pulse 1.8s ease-in-out infinite; */
+   color: white;
 }
 
 @keyframes edit-pulse {
@@ -498,19 +499,13 @@
 }
 
 /* Editing Mode */
-#phonesTable tbody tr.editing_row {
-  background: linear-gradient(90deg, #fff3cd 0%, #fffbeb 100%) !important;
-  border: 2px solid #ffc107;
-  outline: 2px solid #ff9800;
-  box-shadow: 0 0 12px rgba(255, 193, 7, 0.3), inset 0 0 8px rgba(255, 193, 7, 0.1);
-}
-
 #phonesTable tbody tr.editing_row td {
   background: transparent;
 }
 
 #phonesTable td[contenteditable="true"] {
-  background: #ffffeb;
+  /* background: #ffffeb; */
+    background: linear-gradient(90deg, #16a085 0%, #138572 100%);
   border: 1px solid #ffc107;
   border-radius: 4px;
   padding: 10px;
@@ -519,7 +514,8 @@
 }
 
 #phonesTable td[contenteditable="true"]:focus {
-  background: #fffacd;
+  /* background: #fffacd; */
+    background: linear-gradient(90deg, #16a085 0%, #138572 100%);
   border-color: #ff9800;
   box-shadow: 0 0 8px rgba(255, 152, 0, 0.3);
   outline: none;
@@ -611,5 +607,8 @@
 }
 
 #phonesTable tbody tr.editing_row {
+  background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+  color: white;
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.15), 0 2px 8px rgba(26, 188, 156, 0.3), inset 0 1px 0 rgba(255,255,255,0.1);
   animation: pulse 1.5s ease-in-out infinite;
 }

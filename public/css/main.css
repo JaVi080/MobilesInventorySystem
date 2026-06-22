@@ -290,7 +290,8 @@ tr:hover {
 
 /* ===== Editing Row Highlight ===== */
 .editing_row {
-  background-color: #fff3cd; /* Yellow tint for editing */
+    background: linear-gradient(90deg, #1abc9c 0%, #16a085 100%);
+  /* background-color: #fff3cd; Yellow tint for editing */
   outline: 2px solid #f39c12; /* Orange outline */
 }
 

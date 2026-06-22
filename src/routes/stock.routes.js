@@ -53,12 +53,12 @@ router.post('/Stock_in', async (req, res) => {
         await pool.query("insert into Stock_in_Purchase(model_no,supplier_id,Stock_in_Quantity,price_mb,scnd_hand) values(?,?,?,?,?)",
             [ModelNo, Supplier, quantity, price, scnd_hand ? quantity : 0]);
         await pool.query(`update Phones set Total_Stock=Total_Stock+?,scnd_hand_mb=scnd_hand_mb+?,
-            base_price=? CASE
+            base_price= CASE
                               WHEN ? > base_price THEN ?
                               ELSE base_price
                            END
                         where Model_no=?`,
-            [quantity, scnd_hand ? quantity : 0, price, ModelNo]);
+            [quantity, scnd_hand ? quantity : 0, price, price, ModelNo]);
         res.json({ success: true, message: "Stock added successfully" });
     } catch (e) {
         console.log(e.message);
@@ -159,12 +159,18 @@ router.patch('/Stock_Update', async (req, res) => {
                     error: `Model number "${newModelNo}" does not exist in the Phones table. Add the phone first or use a valid model number.`
                 });
             }
+            //also update stock model no 
+                     await pool.query(
+        `UPDATE Stock_in_Purchase
+            SET model_no = ?
+         WHERE purchase_id = ?`,
+        [newModelNo, stock_id]
+      );
              
                await pool.query(
         `UPDATE Phones
-         SET Stock_in_Quantity            = Stock_in_Quantity            - ?,
-             scnd_hand = scnd_hand - ?
-
+         SET Total_Stock           = Total_Stock           - ?,
+             scnd_hand_mb = scnd_hand_mb - ?
          WHERE model_no = ?`,
         [oldStockQuantity,oldScndHand, oldModelNo]
       );
@@ -172,13 +178,14 @@ router.patch('/Stock_Update', async (req, res) => {
       // 2c. Increase NEW model's quantities in Phones
       await pool.query(
         `UPDATE Phones
-         SET Stock_in_Quantity            = Stock_in_Quantity            + ?,
-             scnd_hand = scnd_hand + ?
+         SET Total_Stock            = Total_Stock            + ?,
+             scnd_hand_mb = scnd_hand_mb + ?
          WHERE model_no = ?`,
-        [oldStockQuantity,oldScndHand, oldModelNo]
+        [oldStockQuantity,oldScndHand, newModelNo]
       );// Update currentModelNo for further checks
-        }else{
-
+        }
+        else{
+//for same model no
         const stockFields = Object.keys(updateData).filter(field => STOCK_COLUMNS.includes(field));
        const phoneFields = Object.keys(updateData).filter(field => PHONE_COLUMNS.includes(field));
 
@@ -206,16 +213,16 @@ router.patch('/Stock_Update', async (req, res) => {
             );
 
             //now phones update -- here need delta 
-             const deltaQty        = updateData.Stock_in_Quantity            - oldStockQuantity;
-      const deltaSecondHand = updateData.scnd_hand - oldScndHand;
+          const deltaQty        = (updateData.Stock_in_Quantity ?? oldStockQuantity) - oldStockQuantity;
+const deltaSecondHand = (updateData.scnd_hand          ?? oldScndHand)      - oldScndHand;
 
-      await connection.query(
+      await pool.query(
         `UPDATE Phones
-         SET Stock_in_Quantity            = Stock_in_Quantity            + ?,
-             scnd_hand = scnd_hand + ?
-             price_mb = CASE
-                              WHEN ? > price_mb THEN ?
-                              ELSE price_mb
+         SET Total_Stock            = Total_Stock            + ?,
+             scnd_hand_mb = scnd_hand_mb + ?,
+             base_price = CASE
+                              WHEN ? > base_price THEN ?
+                              ELSE base_price
                            END
          WHERE model_no = ?`,
         [deltaQty, deltaSecondHand, updateData.price_mb, updateData.price_mb,oldModelNo]
