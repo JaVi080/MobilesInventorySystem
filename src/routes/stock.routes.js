@@ -52,7 +52,12 @@ router.post('/Stock_in', async (req, res) => {
 
         await pool.query("insert into Stock_in_Purchase(model_no,supplier_id,Stock_in_Quantity,price_mb,scnd_hand) values(?,?,?,?,?)",
             [ModelNo, Supplier, quantity, price, scnd_hand ? quantity : 0]);
-        await pool.query("update Phones set Total_Stock=Total_Stock+?,scnd_hand_mb=scnd_hand_mb+?,base_price=? where Model_no=?",
+        await pool.query(`update Phones set Total_Stock=Total_Stock+?,scnd_hand_mb=scnd_hand_mb+?,
+            base_price=? CASE
+                              WHEN ? > base_price THEN ?
+                              ELSE base_price
+                           END
+                        where Model_no=?`,
             [quantity, scnd_hand ? quantity : 0, price, ModelNo]);
         res.json({ success: true, message: "Stock added successfully" });
     } catch (e) {
@@ -117,7 +122,7 @@ router.post('/Stock_Filter', async (req, res) => {
 
 // Update Stock Data
 const STOCK_COLUMNS = ['model_no', 'supplier_id', 'Stock_in_Quantity', 'price_mb', 'scnd_hand'];
-const PHONE_COLUMNS = ['Brand', 'Model'];
+const PHONE_COLUMNS = ['Stock_in_Quantity', 'price_mb', 'scnd_hand'];
 
 router.patch('/Stock_Update', async (req, res) => {
     try {
@@ -131,46 +136,95 @@ router.patch('/Stock_Update', async (req, res) => {
         }
 
         const [rows] = await pool.query(
-            'SELECT model_no FROM Stock_in_Purchase WHERE purchase_id = ?',
-            [purchase_id]
+            'SELECT model_no,Stock_in_Quantity,price_mb,scnd_hand FROM Stock_in_Purchase WHERE purchase_id = ?',
+            [stock_id]
         );
         if (rows.length === 0) {
             return res.status(404).json({ error: "Stock record not found" });
         }
 
-        const currentModelNo = rows[0].model_no;
-        const stockFields = Object.keys(update_data).filter(field => STOCK_COLUMNS.includes(field));
-        const phoneFields = Object.keys(update_data).filter(field => PHONE_COLUMNS.includes(field));
+        const oldModelNo = rows[0].model_no;
+        const oldStockQuantity = rows[0].Stock_in_Quantity;
+        const oldPrice = rows[0].price_mb;
+        const oldScndHand = rows[0].scnd_hand;
+
+        if (updateData.model_no !== undefined && String(updateData.model_no).trim() !== String(oldModelNo)) {
+            const newModelNo = String(updateData.model_no).trim();
+            const [phoneRows] = await pool.query(
+                'SELECT Model_no FROM Phones WHERE Model_no = ?',
+                [newModelNo]
+            );
+            if (phoneRows.length === 0) {
+                return res.status(400).json({
+                    error: `Model number "${newModelNo}" does not exist in the Phones table. Add the phone first or use a valid model number.`
+                });
+            }
+             
+               await pool.query(
+        `UPDATE Phones
+         SET Stock_in_Quantity            = Stock_in_Quantity            - ?,
+             scnd_hand = scnd_hand - ?
+
+         WHERE model_no = ?`,
+        [oldStockQuantity,oldScndHand, oldModelNo]
+      );
+
+      // 2c. Increase NEW model's quantities in Phones
+      await pool.query(
+        `UPDATE Phones
+         SET Stock_in_Quantity            = Stock_in_Quantity            + ?,
+             scnd_hand = scnd_hand + ?
+         WHERE model_no = ?`,
+        [oldStockQuantity,oldScndHand, oldModelNo]
+      );// Update currentModelNo for further checks
+        }else{
+
+        const stockFields = Object.keys(updateData).filter(field => STOCK_COLUMNS.includes(field));
+       const phoneFields = Object.keys(updateData).filter(field => PHONE_COLUMNS.includes(field));
 
         if (stockFields.length === 0 && phoneFields.length === 0) {
             return res.status(400).json({ error: "No valid fields to update" });
         }
 
-        if (stockFields.length > 0) {
+        if (stockFields.length > 0 || phoneFields.length > 0) {
+
+            //stock update as it is just put values in te tables 
             const stockValues = stockFields.map(field => {
-                const value = update_data[field];
+                const value = updateData[field];
                 if (['supplier_id', 'Stock_in_Quantity', 'scnd_hand', 'price_mb'].includes(field)) {
                     return Number(value);
                 }
                 return value;
             });
-            const stockSql = stockFields.map(field => `${field}=?`).join(', ');
-            stockValues.push(purchase_id);
+           
+          
+              const stockSql = stockFields.map(field => `${field}=?`).join(', ');
+            stockValues.push(stock_id);
             await pool.query(
                 `UPDATE Stock_in_Purchase SET ${stockSql} WHERE purchase_id = ?`,
                 stockValues
             );
+
+            //now phones update -- here need delta 
+             const deltaQty        = updateData.Stock_in_Quantity            - oldStockQuantity;
+      const deltaSecondHand = updateData.scnd_hand - oldScndHand;
+
+      await connection.query(
+        `UPDATE Phones
+         SET Stock_in_Quantity            = Stock_in_Quantity            + ?,
+             scnd_hand = scnd_hand + ?
+             price_mb = CASE
+                              WHEN ? > price_mb THEN ?
+                              ELSE price_mb
+                           END
+         WHERE model_no = ?`,
+        [deltaQty, deltaSecondHand, updateData.price_mb, updateData.price_mb,oldModelNo]
+      );
         }
 
-        if (phoneFields.length > 0) {
-            const phoneValues = phoneFields.map(field => updateData[field]);
-            const phoneSql = phoneFields.map(field => `${field}=?`).join(', ');
-            phoneValues.push(currentModelNo);
-            await pool.query(
-                `UPDATE Phones SET ${phoneSql} WHERE Model_no = ?`,
-                phoneValues
-            );
         }
+
+    
 
         res.json({ success: true, message: "Stock updated successfully" });
     } catch (e) {

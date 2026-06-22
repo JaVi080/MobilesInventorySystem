@@ -177,7 +177,8 @@ stockTableBody?.addEventListener("dblclick", e => {
   selected_row.classList.add("selected_row", "editing_row");
 
   selected_row.querySelectorAll("td").forEach((td, index) => {
-    if (td.dataset.column_n === "purchased_id" || td.dataset.column_n === "stock_in_date" || td.dataset.column_n === "supplier_name") {
+    if (td.dataset.column_n === "purchased_id" || td.dataset.column_n === "stock_in_date" || td.dataset.column_n === "supplier_name" ||
+      td.dataset.column_n === "Brand"|| td.dataset.column_n === "Model") {
       td.contentEditable = false;
       td.dataset.original = td.innerText.trim();
       return;
@@ -221,7 +222,9 @@ save_btn?.addEventListener("click", async () => {
 // cell.dataset.column_n = the column name stored inside that cell
   const updateData = {};
   selected_row.querySelectorAll("td").forEach((cell) => {
-    if (cell.dataset.column_n === "purchased_id" || cell.dataset.column_n === "stock_in_date" || cell.dataset.column_n === "supplier_name") {
+    if (cell.dataset.column_n === "purchased_id" || cell.dataset.column_n === "stock_in_date" || cell.dataset.column_n === "supplier_name"
+      || cell.dataset.column_n === "Brand" || cell.dataset.column_n === "Model"
+    ) {
       return;
     }
     const originalValue = cell.dataset.original?.trim();
@@ -238,10 +241,11 @@ save_btn?.addEventListener("click", async () => {
 
   try {
     const stock_id = selected_row.querySelector("td").innerText.trim();
+
     const res = await secureFetch('http://localhost:5000/api/Stock_Update', {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ stock_id, ...updateData })
+      body: JSON.stringify({ stock_id, updateData: updateData })
     });
 
     const result = await res.json();

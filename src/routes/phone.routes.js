@@ -100,4 +100,5 @@ router.patch('/UpdatePhones',async(req,res)=>{
       console.log(err.message);
    }
 })
-module.exports = router;
+module.exports = router;  ALLOWED_COLUMNS 
+
