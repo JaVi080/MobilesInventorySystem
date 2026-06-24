@@ -5,7 +5,9 @@ const pool=require("../config/db.js"); // database connection
 //inserting data OF Phones
 router.post('/AddPhones',async(req,res)=>{
    try{
+    console.log("BODY:", req.body);
 const {brand,model,model_no,OS,Processor,Storage,Ram,Warranty}=req.body;
+ 
  if (!brand || !model||!model_no){
         return res.status(400).json({ error: "Name and model required" });
  }
