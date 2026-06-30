@@ -23,6 +23,7 @@ It shows how to keep frontend and backend responsibilities separated while suppo
 - stock-entry and inventory operations
 - JWT-based authentication
 - protected API routes
+- automated email-based employee onboarding (setup link via nodemailer)
 - modular route handlers
 - static frontend integration using HTML/CSS/JavaScript
 - environment-based configuration with .env
@@ -35,6 +36,7 @@ It shows how to keep frontend and backend responsibilities separated while suppo
 - MySQL
 - JWT (`jsonwebtoken`)
 - password hashing (`bcryptjs`)
+- email notifications (`nodemailer`)
 - environment configuration (`dotenv`)
 - CORS support (`cors`)
 
@@ -56,6 +58,10 @@ Authorization: Bearer <token>
 ```
 
 Protected routes verify the token before allowing access to inventory operations.
+
+## Employee Onboarding
+
+When a new employee is added, `nodemailer` sends them a secure setup link with a 30-minute expiry token. The employee uses this link to set their own password (hashed via `bcryptjs`) before logging in — no plaintext passwords are ever shared.
 
 ## Screenshots
 ### Login 

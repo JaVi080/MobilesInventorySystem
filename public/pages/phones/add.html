@@ -77,7 +77,7 @@ const act_form=document.getElementById("phone_form")?.addEventListener("submit",
     try{
     const res=await secureFetch('http://localhost:5000/api/AddPhones',{
         method:"POST",
-        headers:{"Content-type":"application/json"},
+        headers:{"Content-Type":"application/json"},
         // body:JSON.stringify({P_name,P_model,brand})
         body:JSON.stringify(data)
     });

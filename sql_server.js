@@ -16,8 +16,8 @@ const corsOptions = {
 // CORS is applied as Express middleware.
 app.use(cors());
 
-
-app.use(express.json()); // to parse incoming data
+app.use(express.json()); // to parse incoming JSON data
+app.use(express.urlencoded({ extended: true })); // to parse HTML form submissions
 app.use(express.static(path.join(__dirname, 'public')));//serves frontend files
 
 

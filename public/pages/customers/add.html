@@ -25,7 +25,7 @@
       <div class="form-grid">
         <div class="form-group">
           <label for="fName">Customer First Name:</label>
-          <input type="text" id=" customerName" name="fName" required>
+          <input type="text" id="customerName" name="fName" required>
         </div>
         <div class="form-group">
           <label for="lName"> Last Name:</label>
@@ -74,7 +74,7 @@ const act_form=document.getElementById("Customer_form")?.addEventListener("submi
     try{
     const res=await secureFetch('http://localhost:5000/api/AddCustomers',{
         method:"POST",
-        headers:{"Content-type":"application/json"},
+        headers:{"Content-Type":"application/json"},
         // body:JSON.stringify({P_name,P_model,brand})
         body:JSON.stringify(data)
     });

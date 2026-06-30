@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post('/AddCustomers',async(req,res)=>{
     try{
-const{fName,last_Name,City,Email,Phone,Address}=req.body;
+const {fName,last_Name,City,Email,Phone,Address}=req.body;
 if(!fName){
     return res.status(400).json({error:"Customer Name is required"});
 }
